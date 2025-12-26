@@ -4,125 +4,207 @@
 {% block title %}{% trans "À propos" %}{% endblock %}
 
 {% block content %}
-<!-- Hero -->
-<section class="relative py-24 bg-gradient-to-br from-secondary/5 to-primary/5">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto">
-            <h1 class="font-display text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-                {% trans "Fondation Denise Time Mafodom" %}
+<!-- Hero - Immersive Story Opener -->
+<section class="relative min-h-[70vh] flex items-center overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0">
+        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1600" alt="FDTM Community" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-charcoal/95 via-charcoal/80 to-transparent"></div>
+    </div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="max-w-2xl" data-animate>
+            <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{% trans "Notre histoire" %}</p>
+            <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                {% trans "Une fondation née de l'amour" %}
             </h1>
-            <p class="text-xl text-gray-600">
-                {% trans "Une organisation à but non lucratif dédiée à transformer les vies dans les communautés camerounaises par une action compatissante et durable." %}
+            <p class="text-xl text-gray-300 leading-relaxed mb-8">
+                {% trans "En mémoire de Maman Denise Time Mafodom, nous perpétuons sa vision : un monde où chaque être humain vit dans la dignité." %}
             </p>
+            <div class="flex flex-wrap gap-4">
+                <a href="{% url 'donations:donate' %}" class="btn btn-primary">{% trans "Rejoindre notre mission" %}</a>
+                <a href="#notre-histoire" class="text-white hover:text-primary font-medium flex items-center gap-2">
+                    {% trans "Découvrir notre histoire" %}
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                    </svg>
+                </a>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Mission & Vision -->
-<section class="py-20 bg-white">
+<!-- Story Section -->
+<section id="notre-histoire" class="py-24 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-2 gap-16">
-            <div class="bg-background rounded-3xl p-10" data-animate>
-                <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <div data-animate>
+                <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{% trans "L'héritage" %}</p>
+                <h2 class="font-display text-3xl sm:text-4xl font-bold text-charcoal mb-6">
+                    {% trans "Quand une vie inspire des milliers d'autres" %}
+                </h2>
+                <div class="prose prose-lg text-gray-600">
+                    <p>
+                        {% trans "Maman Denise Time Mafodom était bien plus qu'une mère, une épouse ou une enseignante. Elle était un phare pour sa communauté, toujours présente pour ceux qui avaient besoin d'aide." %}
+                    </p>
+                    <p>
+                        {% trans "Après son départ en 2018, sa famille a voulu transformer le deuil en action. Ainsi est née la Fondation Denise Time Mafodom, pour continuer ce qu'elle avait commencé : allumer l'espoir partout où il s'éteint." %}
+                    </p>
                 </div>
-                <h2 class="font-display text-2xl font-bold text-gray-900 mb-4">{% trans "Notre Mission" %}</h2>
-                <p class="text-gray-600 leading-relaxed">
-                    {{ settings.mission_text|default:_("Allumer l'espoir, autonomiser les vies et transformer les communautés par notre humanité partagée. Nous défendons la solidarité humaine en créant des voies d'opportunité grâce à une éducation transformatrice, des échanges culturels dynamiques et un développement social durable.") }}
-                </p>
+            </div>
+            <div class="relative" data-animate>
+                <img src="https://images.unsplash.com/photo-1531983412531-1f49a365ffed?w=800" alt="Community gathering" 
+                     class="rounded-3xl shadow-2xl">
+                <div class="absolute -bottom-8 -left-8 bg-primary text-white p-6 rounded-2xl shadow-xl">
+                    <span class="block text-4xl font-bold">2018</span>
+                    <span class="text-white/80 text-sm">{% trans "Année de création" %}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mission & Vision - Split Design -->
+<section class="py-24 bg-background">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- Mission -->
+            <div class="bg-white rounded-3xl p-10 lg:p-12 shadow-lg relative overflow-hidden group" data-animate>
+                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
+                <div class="relative">
+                    <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h2 class="font-display text-2xl font-bold text-charcoal mb-4">{% trans "Notre Mission" %}</h2>
+                    <p class="text-gray-600 leading-relaxed text-lg">
+                        {{ settings.mission_text|default:_("Allumer l'espoir, autonomiser les vies et transformer les communautés par notre humanité partagée. Nous créons des voies d'opportunité grâce à une éducation transformatrice, des échanges culturels et un développement social durable.") }}
+                    </p>
+                </div>
             </div>
             
-            <div class="bg-background rounded-3xl p-10" data-animate>
-                <div class="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mb-6">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                    </svg>
+            <!-- Vision -->
+            <div class="bg-charcoal text-white rounded-3xl p-10 lg:p-12 shadow-lg relative overflow-hidden group" data-animate>
+                <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
+                <div class="relative">
+                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+                    <h2 class="font-display text-2xl font-bold mb-4">{% trans "Notre Vision" %}</h2>
+                    <p class="text-gray-300 leading-relaxed text-lg">
+                        {{ settings.vision_text|default:_("Un monde uni par la compassion, où chaque communauté s'épanouit dans la dignité. Nous envisageons un avenir où la compassion transcende toutes les frontières géographiques, culturelles et économiques.") }}
+                    </p>
                 </div>
-                <h2 class="font-display text-2xl font-bold text-gray-900 mb-4">{% trans "Notre Vision" %}</h2>
-                <p class="text-gray-600 leading-relaxed">
-                    {{ settings.vision_text|default:_("Un monde uni par la compassion, où chaque communauté s'épanouit dans la dignité et avec un but. Nous envisageons un avenir où la compassion transcende toutes les frontières géographiques, culturelles et économiques.") }}
-                </p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Values -->
-<section class="py-20 bg-gray-900 text-white">
+<!-- Values - Modern Cards -->
+<section class="py-24 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="font-display text-3xl font-bold text-center mb-16">{% trans "Nos Valeurs Fondamentales" %}</h2>
+        <div class="text-center mb-16" data-animate>
+            <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{% trans "Ce qui nous guide" %}</p>
+            <h2 class="font-display text-3xl sm:text-4xl font-bold text-charcoal">{% trans "Nos Valeurs Fondamentales" %}</h2>
+        </div>
         
-        <div class="grid md:grid-cols-3 gap-12">
-            <div class="text-center" data-animate>
-                <div class="w-20 h-20 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="group relative bg-gradient-to-br from-primary/5 to-primary/10 rounded-3xl p-8 hover:shadow-xl transition-all" data-animate>
+                <div class="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                     </svg>
                 </div>
-                <h3 class="font-display text-xl font-bold mb-3">{% trans "Impact Direct" %}</h3>
-                <p class="text-gray-400">
-                    {% trans "Chaque don atteint directement ceux qui en ont besoin. Pas de bureaucratie, juste de l'action." %}
-                </p>
+                <h3 class="font-display text-xl font-bold text-charcoal mb-3">{% trans "Compassion" %}</h3>
+                <p class="text-gray-600">{% trans "Chaque action est guidée par l'empathie et le respect profond de la dignité humaine." %}</p>
             </div>
             
-            <div class="text-center" data-animate>
-                <div class="w-20 h-20 bg-accent/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <svg class="w-10 h-10 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="group relative bg-gradient-to-br from-secondary/5 to-secondary/10 rounded-3xl p-8 hover:shadow-xl transition-all" data-animate>
+                <div class="w-14 h-14 bg-secondary rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                     </svg>
                 </div>
-                <h3 class="font-display text-xl font-bold mb-3">{% trans "Transparence" %}</h3>
-                <p class="text-gray-400">
-                    {% trans "Nous rendons compte de chaque centime. Suivez l'impact de votre contribution en temps réel." %}
-                </p>
+                <h3 class="font-display text-xl font-bold text-charcoal mb-3">{% trans "Transparence" %}</h3>
+                <p class="text-gray-600">{% trans "Nous rendons compte de chaque centime. Suivez l'impact de votre contribution en temps réel." %}</p>
             </div>
             
-            <div class="text-center" data-animate>
-                <div class="w-20 h-20 bg-secondary/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <svg class="w-10 h-10 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="group relative bg-gradient-to-br from-accent/5 to-accent/10 rounded-3xl p-8 hover:shadow-xl transition-all" data-animate>
+                <div class="w-14 h-14 bg-accent rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                     </svg>
                 </div>
-                <h3 class="font-display text-xl font-bold mb-3">{% trans "Durabilité" %}</h3>
-                <p class="text-gray-400">
-                    {% trans "Nous visons un changement durable, pas des solutions temporaires. Construire pour les générations futures." %}
-                </p>
+                <h3 class="font-display text-xl font-bold text-charcoal mb-3">{% trans "Durabilité" %}</h3>
+                <p class="text-gray-600">{% trans "Nous visons un changement durable, pas des solutions temporaires. Construire pour les générations futures." %}</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Team -->
-{% if team_members %}
-<section class="py-20 bg-background">
+<!-- Impact Numbers -->
+<section class="py-20 bg-charcoal text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="font-display text-3xl font-bold text-center text-gray-900 mb-4">{% trans "Notre Équipe" %}</h2>
-        <p class="text-gray-600 text-center max-w-2xl mx-auto mb-12">
-            {% trans "Des personnes passionnées unies par une vision commune de changement." %}
-        </p>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+            <div data-animate>
+                <span class="block text-4xl lg:text-5xl font-bold text-primary mb-2">520+</span>
+                <span class="text-gray-400">{% trans "Familles aidées" %}</span>
+            </div>
+            <div data-animate>
+                <span class="block text-4xl lg:text-5xl font-bold text-primary mb-2">12</span>
+                <span class="text-gray-400">{% trans "Villages touchés" %}</span>
+            </div>
+            <div data-animate>
+                <span class="block text-4xl lg:text-5xl font-bold text-primary mb-2">150+</span>
+                <span class="text-gray-400">{% trans "Bourses scolaires" %}</span>
+            </div>
+            <div data-animate>
+                <span class="block text-4xl lg:text-5xl font-bold text-primary mb-2">7</span>
+                <span class="text-gray-400">{% trans "Années d'action" %}</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+{% if team_members %}
+<section class="py-24 bg-background">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16" data-animate>
+            <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{% trans "Les visages derrière la mission" %}</p>
+            <h2 class="font-display text-3xl sm:text-4xl font-bold text-charcoal mb-4">{% trans "Notre Équipe" %}</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">{% trans "Des personnes passionnées unies par une vision commune de changement." %}</p>
+        </div>
         
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {% for member in team_members %}
-            <div class="bg-white rounded-2xl overflow-hidden shadow-lg text-center" data-animate>
-                <div class="h-48 overflow-hidden">
+            <div class="group" data-animate>
+                <div class="relative overflow-hidden rounded-2xl mb-4">
                     {% if member.photo %}
-                    <img src="{{ member.photo.url }}" alt="{{ member.name }}" class="w-full h-full object-cover">
+                    <img src="{{ member.photo.url }}" alt="{{ member.name }}" 
+                         class="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-500">
+                    {% elif member.photo_url %}
+                    <img src="{{ member.photo_url }}" alt="{{ member.name }}"
+                         class="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-500">
                     {% else %}
-                    <div class="w-full h-full bg-gradient-to-br from-primary/40 to-secondary/40 flex items-center justify-center">
-                        <span class="text-4xl font-bold text-white">{{ member.name|slice:":1" }}</span>
+                    <div class="w-full aspect-[3/4] bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                        <span class="text-5xl font-bold text-white">{{ member.name|slice:":1" }}</span>
                     </div>
                     {% endif %}
+                    <!-- Overlay on hover -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-charcoal/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                        {% if member.bio %}
+                        <p class="text-white text-sm line-clamp-3">{{ member.bio }}</p>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="p-6">
-                    <h3 class="font-display font-bold text-gray-900">{{ member.name }}</h3>
-                    <p class="text-primary text-sm">{{ member.title }}</p>
-                    {% if member.bio %}
-                    <p class="text-gray-500 text-sm mt-2 line-clamp-2">{{ member.bio }}</p>
-                    {% endif %}
-                </div>
+                <h3 class="font-display font-bold text-charcoal text-lg">{{ member.name }}</h3>
+                <p class="text-primary text-sm">{{ member.title }}</p>
             </div>
             {% endfor %}
         </div>
@@ -134,12 +216,17 @@
 {% if partners %}
 <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="font-display text-2xl font-bold text-center text-gray-900 mb-12">{% trans "Nos Partenaires" %}</h2>
+        <div class="text-center mb-12">
+            <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-2">{% trans "Ils nous font confiance" %}</p>
+            <h2 class="font-display text-2xl font-bold text-charcoal">{% trans "Nos Partenaires" %}</h2>
+        </div>
         
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center">
             {% for partner in partners %}
             <a href="{{ partner.website }}" target="_blank" class="grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100">
+                {% if partner.logo %}
                 <img src="{{ partner.logo.url }}" alt="{{ partner.name }}" class="max-h-16 mx-auto">
+                {% endif %}
             </a>
             {% endfor %}
         </div>
@@ -147,19 +234,23 @@
 </section>
 {% endif %}
 
-<!-- CTA -->
-<section class="py-20 bg-primary text-white">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-        <h2 class="font-display text-3xl font-bold mb-4">{% trans "Rejoignez notre mission" %}</h2>
-        <p class="text-white/80 mb-8">
-            {% trans "Ensemble, nous pouvons créer un changement durable." %}
+<!-- CTA Section -->
+<section class="py-24 bg-gradient-to-br from-primary to-primary-dark text-white relative overflow-hidden">
+    <!-- Decorative elements -->
+    <div class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-48 -mt-48"></div>
+    <div class="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full -ml-32 -mb-32"></div>
+    
+    <div class="relative max-w-4xl mx-auto px-4 text-center" data-animate>
+        <h2 class="font-display text-3xl sm:text-4xl font-bold mb-6">{% trans "Écrivons ensemble le prochain chapitre" %}</h2>
+        <p class="text-white/80 text-lg mb-10 max-w-2xl mx-auto">
+            {% trans "Votre soutien, quelle que soit sa forme, fait une différence réelle dans la vie de familles entières." %}
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{% url 'donations:donate' %}" class="bg-white text-primary hover:bg-gray-100 px-8 py-4 rounded-xl font-semibold transition-colors">
+            <a href="{% url 'donations:donate' %}" class="bg-white text-primary hover:bg-gray-100 px-8 py-4 rounded-xl font-semibold transition-colors shadow-lg">
                 {% trans "Faire un don" %}
             </a>
             <a href="{% url 'core:contact' %}" class="border-2 border-white text-white hover:bg-white/10 px-8 py-4 rounded-xl font-semibold transition-colors">
-                {% trans "Nous contacter" %}
+                {% trans "Devenir bénévole" %}
             </a>
         </div>
     </div>

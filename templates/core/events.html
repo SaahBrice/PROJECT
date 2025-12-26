@@ -1,0 +1,304 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Événements" %}{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Animated Timeline */
+    .events-timeline {
+        position: relative;
+        padding-left: 3rem;
+    }
+    
+    .events-timeline::before {
+        content: '';
+        position: absolute;
+        left: 0.75rem;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-secondary) 50%, #E5E7EB 50%);
+    }
+    
+    .timeline-event {
+        position: relative;
+        padding-bottom: 3rem;
+        opacity: 0;
+        transform: translateX(-30px);
+        animation: slideIn 0.6s ease forwards;
+    }
+    
+    .timeline-event:nth-child(1) { animation-delay: 0.1s; }
+    .timeline-event:nth-child(2) { animation-delay: 0.2s; }
+    .timeline-event:nth-child(3) { animation-delay: 0.3s; }
+    .timeline-event:nth-child(4) { animation-delay: 0.4s; }
+    .timeline-event:nth-child(5) { animation-delay: 0.5s; }
+    
+    @keyframes slideIn {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    .timeline-dot {
+        position: absolute;
+        left: -2.65rem;
+        top: 0;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        background: var(--color-primary);
+        border: 4px solid white;
+        box-shadow: 0 0 0 4px rgba(0, 104, 255, 0.2);
+        z-index: 10;
+    }
+    
+    .timeline-dot.past {
+        background: #9CA3AF;
+        box-shadow: 0 0 0 4px rgba(156, 163, 175, 0.2);
+    }
+    
+    .timeline-dot.upcoming {
+        animation: pulse-dot 2s infinite;
+    }
+    
+    @keyframes pulse-dot {
+        0%, 100% { box-shadow: 0 0 0 4px rgba(0, 104, 255, 0.2); }
+        50% { box-shadow: 0 0 0 8px rgba(0, 104, 255, 0.1); }
+    }
+    
+    /* Countdown animation */
+    .countdown-unit {
+        transition: transform 0.3s ease;
+    }
+    
+    .countdown-unit:hover {
+        transform: scale(1.1);
+    }
+    
+    .countdown-number {
+        font-variant-numeric: tabular-nums;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="py-20 bg-gradient-to-b from-primary/5 to-background">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto" data-animate>
+            <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{% trans "Agenda" %}</p>
+            <h1 class="font-display text-4xl sm:text-5xl font-bold text-charcoal mb-6">{% trans "Notre calendrier" %}</h1>
+            <p class="text-xl text-gray-600">{% trans "Retrouvez tous nos événements passés et à venir. Chaque rencontre est une opportunité de créer du lien." %}</p>
+        </div>
+    </div>
+</section>
+
+<!-- Upcoming Events with Countdown -->
+{% if upcoming_events %}
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-3 mb-12">
+            <span class="w-3 h-3 rounded-full bg-primary animate-pulse"></span>
+            <h2 class="font-display text-2xl font-bold text-charcoal">{% trans "À venir" %}</h2>
+        </div>
+        
+        <!-- Featured Next Event with Live Countdown -->
+        {% with next_event=upcoming_events.0 %}
+        <div class="bg-gradient-to-br from-charcoal to-gray-800 rounded-3xl overflow-hidden mb-12" data-animate>
+            <div class="grid lg:grid-cols-2">
+                <!-- Image -->
+                <div class="relative h-64 lg:h-auto">
+                    {% if next_event.image_url %}
+                    <img src="{{ next_event.image_url }}" alt="{{ next_event.title }}" class="absolute inset-0 w-full h-full object-cover">
+                    {% else %}
+                    <div class="absolute inset-0 bg-gradient-to-br from-primary to-secondary"></div>
+                    {% endif %}
+                    <div class="absolute inset-0 bg-black/30"></div>
+                    <div class="absolute top-6 left-6">
+                        <span class="px-4 py-2 bg-primary text-white text-sm font-semibold rounded-full">{% trans "Prochain événement" %}</span>
+                    </div>
+                </div>
+                
+                <!-- Content -->
+                <div class="p-8 lg:p-12 text-white">
+                    <p class="text-primary-light text-sm font-semibold mb-3">{{ next_event.event_date|date:"l d F Y" }}</p>
+                    <h3 class="font-display text-2xl lg:text-3xl font-bold mb-4">{{ next_event.title }}</h3>
+                    <p class="text-gray-400 mb-6">{{ next_event.short_description|default:next_event.description|truncatewords:30 }}</p>
+                    
+                    <div class="flex items-center gap-2 text-gray-400 mb-8">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        </svg>
+                        {{ next_event.location }}
+                    </div>
+                    
+                    <!-- Live Countdown -->
+                    <div class="mb-8">
+                        <p class="text-sm text-gray-400 mb-3">{% trans "Compte à rebours" %}</p>
+                        <div class="grid grid-cols-4 gap-3" id="countdown-{{ next_event.id }}" data-event-date="{{ next_event.event_date|date:'c' }}">
+                            <div class="countdown-unit bg-white/10 rounded-xl p-3 text-center">
+                                <span class="countdown-number block text-3xl font-bold text-white" data-days>--</span>
+                                <span class="text-xs text-gray-400 uppercase">{% trans "Jours" %}</span>
+                            </div>
+                            <div class="countdown-unit bg-white/10 rounded-xl p-3 text-center">
+                                <span class="countdown-number block text-3xl font-bold text-white" data-hours>--</span>
+                                <span class="text-xs text-gray-400 uppercase">{% trans "Heures" %}</span>
+                            </div>
+                            <div class="countdown-unit bg-white/10 rounded-xl p-3 text-center">
+                                <span class="countdown-number block text-3xl font-bold text-white" data-minutes>--</span>
+                                <span class="text-xs text-gray-400 uppercase">{% trans "Min" %}</span>
+                            </div>
+                            <div class="countdown-unit bg-white/10 rounded-xl p-3 text-center">
+                                <span class="countdown-number block text-3xl font-bold text-white" data-seconds>--</span>
+                                <span class="text-xs text-gray-400 uppercase">{% trans "Sec" %}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="{% url 'core:contact' %}" class="btn btn-primary">{% trans "S'inscrire" %}</a>
+                </div>
+            </div>
+        </div>
+        {% endwith %}
+        
+        <!-- Other Upcoming Events Timeline -->
+        {% if upcoming_events|length > 1 %}
+        <div class="events-timeline">
+            {% for event in upcoming_events %}
+            {% if not forloop.first %}
+            <div class="timeline-event">
+                <div class="timeline-dot upcoming"></div>
+                <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-shadow">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        {% if event.image_url %}
+                        <div class="w-full md:w-48 h-32 rounded-xl overflow-hidden flex-shrink-0">
+                            <img src="{{ event.image_url }}" alt="{{ event.title }}" class="w-full h-full object-cover">
+                        </div>
+                        {% endif %}
+                        <div class="flex-1">
+                            <div class="flex flex-wrap items-center gap-4 mb-2">
+                                <span class="text-primary font-semibold text-sm">{{ event.event_date|date:"d M Y" }}</span>
+                                <span class="px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full">{{ event.days_until }} {% trans "jours" %}</span>
+                            </div>
+                            <h4 class="font-display text-xl font-bold text-charcoal mb-2">{{ event.title }}</h4>
+                            <p class="text-gray-500 text-sm mb-3">{{ event.short_description|default:event.description|truncatewords:20 }}</p>
+                            <div class="flex items-center gap-2 text-sm text-gray-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                </svg>
+                                {{ event.location }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endif %}
+
+<!-- Past Events -->
+{% if past_events %}
+<section class="py-16 bg-background">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-3 mb-12">
+            <span class="w-3 h-3 rounded-full bg-gray-400"></span>
+            <h2 class="font-display text-2xl font-bold text-charcoal">{% trans "Événements passés" %}</h2>
+        </div>
+        
+        <div class="events-timeline">
+            {% for event in past_events %}
+            <div class="timeline-event">
+                <div class="timeline-dot past"></div>
+                <div class="bg-white rounded-2xl p-6 shadow-sm opacity-80 hover:opacity-100 transition-opacity">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        {% if event.image_url %}
+                        <div class="w-full md:w-48 h-32 rounded-xl overflow-hidden flex-shrink-0 grayscale hover:grayscale-0 transition-all">
+                            <img src="{{ event.image_url }}" alt="{{ event.title }}" class="w-full h-full object-cover">
+                        </div>
+                        {% endif %}
+                        <div class="flex-1">
+                            <div class="flex flex-wrap items-center gap-4 mb-2">
+                                <span class="text-gray-500 font-semibold text-sm">{{ event.event_date|date:"d M Y" }}</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-500 text-xs font-semibold rounded-full">{% trans "Terminé" %}</span>
+                            </div>
+                            <h4 class="font-display text-xl font-bold text-charcoal mb-2">{{ event.title }}</h4>
+                            <p class="text-gray-500 text-sm mb-3">{{ event.short_description|default:event.description|truncatewords:20 }}</p>
+                            <div class="flex items-center gap-2 text-sm text-gray-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                </svg>
+                                {{ event.location }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Newsletter CTA -->
+<section class="py-16 bg-primary text-white">
+    <div class="max-w-2xl mx-auto px-4 text-center">
+        <h2 class="font-display text-2xl font-bold mb-4">{% trans "Ne manquez aucun événement" %}</h2>
+        <p class="text-white/80 mb-8">{% trans "Inscrivez-vous pour recevoir nos invitations en avant-première." %}</p>
+        <form action="{% url 'core:newsletter_subscribe' %}" method="post" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="{% trans 'Votre email' %}" required 
+                   class="flex-1 px-5 py-3 rounded-xl text-charcoal focus:ring-2 focus:ring-white/50 outline-none">
+            <button type="submit" class="btn bg-white text-primary hover:bg-gray-100">{% trans "S'inscrire" %}</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Live Countdown Timer
+document.querySelectorAll('[id^="countdown-"]').forEach(countdown => {
+    const eventDate = new Date(countdown.dataset.eventDate).getTime();
+    
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = eventDate - now;
+        
+        if (distance < 0) {
+            countdown.innerHTML = '<div class="col-span-4 text-center text-white/60">Événement en cours!</div>';
+            return;
+        }
+        
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        const daysEl = countdown.querySelector('[data-days]');
+        const hoursEl = countdown.querySelector('[data-hours]');
+        const minutesEl = countdown.querySelector('[data-minutes]');
+        const secondsEl = countdown.querySelector('[data-seconds]');
+        
+        if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+        if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+        if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+        if (secondsEl) {
+            secondsEl.textContent = String(seconds).padStart(2, '0');
+            // Add pulse effect on seconds change
+            secondsEl.style.transform = 'scale(1.1)';
+            setTimeout(() => { secondsEl.style.transform = 'scale(1)'; }, 100);
+        }
+    }
+    
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+});
+</script>
+{% endblock %}

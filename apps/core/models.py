@@ -253,3 +253,62 @@ class Newsletter(models.Model):
     
     def __str__(self):
         return self.email
+
+
+class Event(models.Model):
+    """Upcoming events - conferences, festivals, community gatherings"""
+    
+    title = models.CharField(_("Titre"), max_length=200)
+    description = models.TextField(_("Description"))
+    short_description = models.CharField(_("Description courte"), max_length=300, blank=True)
+    
+    # Date and time
+    event_date = models.DateTimeField(_("Date de l'événement"))
+    end_date = models.DateTimeField(_("Date de fin"), null=True, blank=True)
+    
+    # Location
+    location = models.CharField(_("Lieu"), max_length=200)
+    address = models.TextField(_("Adresse complète"), blank=True)
+    
+    # Media
+    image = models.ImageField(_("Image"), upload_to='events/', blank=True)
+    image_url = models.URLField(_("URL image"), blank=True)
+    
+    # Status
+    is_featured = models.BooleanField(_("Mis en avant"), default=False)
+    is_published = models.BooleanField(_("Publié"), default=True)
+    
+    # Link to project (optional)
+    project = models.ForeignKey(
+        'projects.Project',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='events',
+        verbose_name=_("Projet associé")
+    )
+    
+    # Timestamps
+    created_at = models.DateTimeField(_("Créé le"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("Modifié le"), auto_now=True)
+    
+    class Meta:
+        verbose_name = _("Événement")
+        verbose_name_plural = _("Événements")
+        ordering = ['event_date']
+    
+    def __str__(self):
+        return self.title
+    
+    @property
+    def is_upcoming(self):
+        from django.utils import timezone
+        return self.event_date > timezone.now()
+    
+    @property
+    def days_until(self):
+        from django.utils import timezone
+        if self.is_upcoming:
+            delta = self.event_date - timezone.now()
+            return delta.days
+        return 0

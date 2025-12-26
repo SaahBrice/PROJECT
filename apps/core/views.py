@@ -6,7 +6,8 @@ Homepage, about, contact, and legal pages.
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
-from .models import SiteSettings, TeamMember, Testimonial, Partner, ImpactStat, FAQ, ContactMessage, Newsletter
+from django.utils import timezone
+from .models import SiteSettings, TeamMember, Testimonial, Partner, ImpactStat, FAQ, ContactMessage, Newsletter, Event
 from apps.projects.models import Project
 from apps.articles.models import Article
 
@@ -27,6 +28,10 @@ def home(request):
         )[:3],
         'impact_stats': ImpactStat.objects.filter(is_active=True),
         'partners': Partner.objects.filter(is_active=True)[:6],
+        'upcoming_events': Event.objects.filter(
+            is_published=True,
+            event_date__gt=timezone.now()
+        )[:3],
     }
     return render(request, 'core/home.html', context)
 
@@ -100,3 +105,23 @@ def newsletter_subscribe(request):
                 messages.info(request, _("Vous êtes déjà inscrit à notre newsletter."))
         
     return redirect(request.META.get('HTTP_REFERER', 'core:home'))
+
+
+def events_list(request):
+    """Events page with animated timeline"""
+    upcoming_events = Event.objects.filter(
+        is_published=True,
+        event_date__gt=timezone.now()
+    ).order_by('event_date')
+    
+    past_events = Event.objects.filter(
+        is_published=True,
+        event_date__lte=timezone.now()
+    ).order_by('-event_date')
+    
+    context = {
+        'upcoming_events': upcoming_events,
+        'past_events': past_events,
+    }
+    return render(request, 'core/events.html', context)
+

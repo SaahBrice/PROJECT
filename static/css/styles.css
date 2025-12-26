@@ -881,3 +881,20 @@ h6 {
         opacity: 0.3;
     }
 }
+
+/* =============================================================================
+   SLOW ZOOM ANIMATION (Ken Burns Effect)
+   ============================================================================= */
+@keyframes slow-zoom {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.15);
+    }
+}
+
+.animate-slow-zoom {
+    animation: slow-zoom 20s ease-out forwards;
+}
