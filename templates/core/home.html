@@ -1,420 +1,312 @@
 {% extends 'base.html' %}
 {% load static i18n %}
 
-{% block title %}{% trans "Accueil" %}{% endblock %}
+{% block title %}{% trans "Bienvenue" %}{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-background via-white to-primary/5">
-    <!-- Background Pattern -->
-    <div class="absolute inset-0 opacity-5">
-        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23C75B2A" fill-opacity="0.4"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+<!-- ========== OPENING: THE INVITATION ========== -->
+<section class="min-h-screen flex items-center justify-center bg-charcoal text-white relative overflow-hidden">
+    <div class="absolute inset-0">
+        <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-40">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-african-village-at-sunset-1234-large.mp4" type="video/mp4">
+        </video>
+        <div class="absolute inset-0 bg-gradient-to-b from-charcoal/50 via-transparent to-charcoal"></div>
     </div>
     
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
+    <div class="relative z-10 text-center px-4 max-w-4xl mx-auto" data-animate>
+        <p class="text-lg text-white/70 mb-6 tracking-wide">{% trans "Une invitation" %}</p>
+        <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8">
+            {% trans "Entrez dans" %}<br>
+            <span class="text-primary">{% trans "notre village" %}</span>
+        </h1>
+        <p class="text-xl text-white/80 max-w-2xl mx-auto mb-12 leading-relaxed">
+            {% trans "Ici, chaque chemin mène à une histoire. Chaque porte ouvre sur un visage. Chaque pas vous rapproche d'une famille." %}
+        </p>
+        <a href="#premiere-histoire" class="inline-flex flex-col items-center gap-2 text-white/60 hover:text-white transition-colors">
+            <span class="text-sm">{% trans "Commencer le voyage" %}</span>
+            <svg class="w-6 h-6 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+        </a>
+    </div>
+</section>
+
+<!-- ========== CHAPTER 1: A VOICE FROM THE VILLAGE ========== -->
+<section id="premiere-histoire" class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid lg:grid-cols-2 gap-16 items-center">
-            <!-- Left: Content -->
-            <div class="text-center lg:text-left" data-animate>
-                <span class="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-6">
-                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
-                    </svg>
-                    {% trans "ONLUS Certifiée" %}
-                </span>
-                
-                <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
-                    {% trans "Construire un avenir" %}
-                    <span class="text-primary"> {% trans "plus lumineux" %}</span>,
-                    <br>{% trans "main dans la main" %}
-                </h1>
-                
-                <p class="text-lg text-gray-600 mb-8 max-w-xl mx-auto lg:mx-0">
-                    {% trans "En partenariat avec les villages de Dschang au Cameroun, nous veillons à ce que chaque famille ait la possibilité de prospérer grâce à l'accès aux soins de santé, à l'éducation et au patrimoine culturel." %}
-                </p>
-                
-                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                    <a href="{% url 'projects:list' %}" 
-                       class="bg-primary hover:bg-primary-dark text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:shadow-xl hover:-translate-y-1">
-                        {% trans "Découvrir nos projets" %}
-                    </a>
-                    <a href="{% url 'donations:donate' %}" 
-                       class="border-2 border-secondary text-secondary hover:bg-secondary hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all">
-                        {% trans "Faire un don" %}
-                    </a>
+            <!-- Story -->
+            <div data-animate>
+                <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{% trans "Une voix du village" %}</p>
+                <h2 class="font-display text-3xl sm:text-4xl font-bold text-charcoal mb-6 leading-tight">
+                    {% trans "« Avant, je marchais 12 km pour voir un médecin. »" %}
+                </h2>
+                <div class="prose prose-lg text-gray-600">
+                    <p>{% trans "Maman Rose, 67 ans, guérisseuse traditionnelle à Foto. Quand le centre de santé a ouvert ses portes, elle a pleuré. Pas de tristesse — de soulagement." %}</p>
+                    <p>{% trans "Aujourd'hui, elle travaille main dans la main avec les infirmières. Son savoir ancestral rencontre la médecine moderne. Ses petits-enfants sont vaccinés." %}</p>
+                </div>
+                <div class="mt-8 flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-full overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100" alt="Maman Rose" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <p class="font-semibold text-charcoal">Maman Rose</p>
+                        <p class="text-sm text-gray-500">Foto, {% trans "Région Ouest" %}</p>
+                    </div>
                 </div>
             </div>
             
-            <!-- Right: Image Collage -->
-            <div class="relative hidden lg:block" data-animate>
-                <div class="relative">
-                    <!-- Main image -->
-                    <div class="w-full h-[500px] rounded-3xl overflow-hidden shadow-2xl bg-gray-200 transform rotate-2 hover:rotate-0 transition-transform duration-500">
-                        <img src="{% static 'images/hero-main.jpg' %}" alt="FDTM Community" 
-                             class="w-full h-full object-cover"
-                             onerror="this.src='https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800'">
-                    </div>
-                    
-                    <!-- Floating stats card -->
-                    <div class="absolute -bottom-8 -left-8 bg-white rounded-2xl shadow-xl p-6 transform hover:scale-105 transition-transform">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-14 h-14 bg-accent/20 rounded-xl flex items-center justify-center">
-                                <svg class="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-3xl font-bold text-gray-900">500+</p>
-                                <p class="text-gray-500">{% trans "Familles aidées" %}</p>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Image -->
+            <div class="relative" data-animate data-delay="200">
+                <div class="aspect-[4/5] rounded-2xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800" alt="Centre de santé" class="w-full h-full object-cover">
+                </div>
+                <div class="absolute -bottom-6 -left-6 bg-primary text-white p-6 rounded-xl shadow-xl">
+                    <p class="text-3xl font-bold">3 200</p>
+                    <p class="text-sm opacity-80">{% trans "consultations en 2024" %}</p>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-        </svg>
+</section>
+
+<!-- ========== THE PATH: VISUAL JOURNEY ========== -->
+<section class="py-16 bg-background">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-center gap-4 text-gray-400" data-animate>
+            <div class="w-16 h-px bg-gray-300"></div>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+            </svg>
+            <span class="text-sm uppercase tracking-wider">{% trans "Continuons le chemin" %}</span>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+            </svg>
+            <div class="w-16 h-px bg-gray-300"></div>
+        </div>
     </div>
 </section>
 
-<!-- Mission & Vision Section -->
+<!-- ========== CHAPTER 2: THE CHILDREN ========== -->
 <section class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-2 gap-16">
-            <!-- Mission -->
-            <div class="relative" data-animate>
-                <div class="absolute -top-4 -left-4 w-20 h-20 bg-primary/10 rounded-full"></div>
-                <div class="relative bg-background rounded-3xl p-10">
-                    <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                        </svg>
-                    </div>
-                    <h2 class="font-display text-2xl font-bold text-gray-900 mb-4">{% trans "Notre Mission" %}</h2>
-                    <p class="text-gray-600 leading-relaxed">
-                        {% trans "Allumer l'espoir, autonomiser les vies et transformer les communautés par notre humanité partagée. Nous défendons la solidarité humaine en créant des voies d'opportunité grâce à une éducation transformatrice, des échanges culturels dynamiques et un développement social durable." %}
-                    </p>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <!-- Image first on this side -->
+            <div class="relative order-2 lg:order-1" data-animate>
+                <div class="aspect-[4/5] rounded-2xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800" alt="Étudiants" class="w-full h-full object-cover">
+                </div>
+                <div class="absolute -bottom-6 -right-6 bg-charcoal text-white p-6 rounded-xl shadow-xl">
+                    <p class="text-3xl font-bold">127</p>
+                    <p class="text-sm opacity-80">{% trans "boursiers cette année" %}</p>
                 </div>
             </div>
             
-            <!-- Vision -->
-            <div class="relative" data-animate>
-                <div class="absolute -top-4 -right-4 w-20 h-20 bg-secondary/10 rounded-full"></div>
-                <div class="relative bg-background rounded-3xl p-10">
-                    <div class="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mb-6">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                        </svg>
+            <!-- Story -->
+            <div class="order-1 lg:order-2" data-animate data-delay="200">
+                <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{% trans "Chapitre 2" %}</p>
+                <h2 class="font-display text-3xl sm:text-4xl font-bold text-charcoal mb-6 leading-tight">
+                    {% trans "« Je serai médecin. Comme ceux qui ont soigné ma mère. »" %}
+                </h2>
+                <div class="prose prose-lg text-gray-600">
+                    <p>{% trans "Arouna, 16 ans. Son père est cultivateur. Sa mère a survécu à une complication pendant l'accouchement grâce au centre de santé. Depuis, il a une mission." %}</p>
+                    <p>{% trans "Grâce à une bourse FDTM, il est premier de sa classe au lycée de Dschang. Dans 7 ans, il rentrera au village. Avec une blouse blanche." %}</p>
+                </div>
+                <div class="mt-8 flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span class="text-primary font-bold text-lg">A</span>
                     </div>
-                    <h2 class="font-display text-2xl font-bold text-gray-900 mb-4">{% trans "Notre Vision" %}</h2>
-                    <p class="text-gray-600 leading-relaxed">
-                        {% trans "Un monde uni par la compassion, où chaque communauté s'épanouit dans la dignité et avec un but. Nous envisageons un avenir où la compassion transcende toutes les frontières géographiques, culturelles et économiques." %}
-                    </p>
+                    <div>
+                        <p class="font-semibold text-charcoal">Arouna M.</p>
+                        <p class="text-sm text-gray-500">{% trans "Boursier depuis 2022" %}</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Impact Stats Section -->
-<section class="py-20 bg-gradient-to-r from-primary to-primary-dark text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12" data-animate>
-            <h2 class="font-display text-3xl font-bold mb-4">{% trans "Notre Impact" %}</h2>
-            <p class="text-white/80 max-w-2xl mx-auto">
-                {% trans "Chaque chiffre représente une vie transformée, une famille soutenue, un espoir ranimé." %}
-            </p>
-        </div>
-        
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {% for stat in impact_stats %}
-            <div class="text-center p-6" data-animate>
-                <div class="text-5xl font-bold mb-2" data-counter="{{ stat.value }}">{{ stat.value }}</div>
-                <div class="text-lg text-white/80">{{ stat.suffix }}</div>
-                <div class="text-sm text-white/60 mt-1">{{ stat.title }}</div>
-            </div>
-            {% empty %}
-            <!-- Default stats if none configured -->
-            <div class="text-center p-6" data-animate>
-                <div class="text-5xl font-bold mb-2">500+</div>
-                <div class="text-lg text-white/80">{% trans "Familles" %}</div>
-            </div>
-            <div class="text-center p-6" data-animate>
-                <div class="text-5xl font-bold mb-2">10</div>
-                <div class="text-lg text-white/80">{% trans "Projets" %}</div>
-            </div>
-            <div class="text-center p-6" data-animate>
-                <div class="text-5xl font-bold mb-2">15</div>
-                <div class="text-lg text-white/80">{% trans "Villages" %}</div>
-            </div>
-            <div class="text-center p-6" data-animate>
-                <div class="text-5xl font-bold mb-2">100%</div>
-                <div class="text-lg text-white/80">{% trans "Transparence" %}</div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!-- Our Pillars Section -->
-<section class="py-24 bg-background">
+<!-- ========== THE FACES: PHOTO GRID ========== -->
+<section class="py-24 bg-charcoal text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16" data-animate>
-            <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-900 mb-4">{% trans "Nos Axes d'Intervention" %}</h2>
-            <p class="text-gray-600 max-w-2xl mx-auto">
-                {% trans "Notre action se déploie sur quatre piliers essentiels pour un développement humain complet et durable." %}
-            </p>
+            <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{% trans "Les visages" %}</p>
+            <h2 class="font-display text-3xl sm:text-4xl font-bold mb-4">{% trans "520 familles. 520 histoires." %}</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto">{% trans "Pas des bénéficiaires. Des partenaires. Des voisins. Des amis." %}</p>
         </div>
         
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Health -->
-            <div class="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2" data-animate>
-                <div class="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-red-500 group-hover:text-white transition-colors">
-                    <svg class="w-8 h-8 text-red-500 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                    </svg>
-                </div>
-                <h3 class="font-display text-xl font-bold text-gray-900 mb-3">{% trans "Santé" %}</h3>
-                <p class="text-gray-600 text-sm">
-                    {% trans "Construire et équiper des centres de santé pour garantir un accès aux soins primaires pour tous." %}
-                </p>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2" data-animate>
+            <div class="aspect-square overflow-hidden rounded-lg">
+                <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200" alt="Visage" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
             </div>
-            
-            <!-- Education -->
-            <div class="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2" data-animate>
-                <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-500 group-hover:text-white transition-colors">
-                    <svg class="w-8 h-8 text-blue-500 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                    </svg>
-                </div>
-                <h3 class="font-display text-xl font-bold text-gray-900 mb-3">{% trans "Éducation" %}</h3>
-                <p class="text-gray-600 text-sm">
-                    {% trans "Offrir des bourses et du matériel scolaire pour libérer le potentiel de chaque enfant." %}
-                </p>
+            <div class="aspect-square overflow-hidden rounded-lg">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200" alt="Visage" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
             </div>
-            
-            <!-- Culture -->
-            <div class="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2" data-animate>
-                <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-purple-500 group-hover:text-white transition-colors">
-                    <svg class="w-8 h-8 text-purple-500 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                </div>
-                <h3 class="font-display text-xl font-bold text-gray-900 mb-3">{% trans "Culture" %}</h3>
-                <p class="text-gray-600 text-sm">
-                    {% trans "Célébrer le patrimoine local et encourager les échanges culturels pour renforcer l'identité." %}
-                </p>
+            <div class="aspect-square overflow-hidden rounded-lg">
+                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200" alt="Visage" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
             </div>
-            
-            <!-- Humanitarian -->
-            <div class="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2" data-animate>
-                <div class="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-500 group-hover:text-white transition-colors">
-                    <svg class="w-8 h-8 text-amber-500 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                    </svg>
-                </div>
-                <h3 class="font-display text-xl font-bold text-gray-900 mb-3">{% trans "Aide Humanitaire" %}</h3>
-                <p class="text-gray-600 text-sm">
-                    {% trans "Intervenir rapidement pour fournir une aide essentielle aux populations en situation de crise." %}
-                </p>
+            <div class="aspect-square overflow-hidden rounded-lg">
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200" alt="Visage" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+            </div>
+            <div class="aspect-square overflow-hidden rounded-lg">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200" alt="Visage" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+            </div>
+            <div class="aspect-square overflow-hidden rounded-lg bg-primary flex items-center justify-center">
+                <span class="text-white font-bold">+514</span>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Featured Projects Section -->
-<section class="py-24 bg-white">
+<!-- ========== LIVE PROJECTS: BREATHING ========== -->
+<section class="py-24 bg-background">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12" data-animate>
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6" data-animate>
             <div>
-                <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-900 mb-2">{% trans "Nos Projets en Cours" %}</h2>
-                <p class="text-gray-600">{% trans "Découvrez comment vous pouvez contribuer au changement" %}</p>
+                <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-2">{% trans "En ce moment" %}</p>
+                <h2 class="font-display text-3xl sm:text-4xl font-bold text-charcoal">{% trans "Projets qui respirent" %}</h2>
             </div>
-            <a href="{% url 'projects:list' %}" class="mt-4 sm:mt-0 text-primary hover:text-primary-dark font-semibold flex items-center group">
+            <a href="{% url 'projects:list' %}" class="text-charcoal hover:text-primary font-medium flex items-center gap-2 group">
                 {% trans "Voir tous les projets" %}
-                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                 </svg>
             </a>
         </div>
         
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="space-y-8">
             {% for project in featured_projects %}
-            <article class="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300" data-animate>
-                <!-- Image -->
-                <div class="relative h-56 overflow-hidden">
-                    {% if project.featured_image %}
-                    <img src="{{ project.featured_image.url }}" alt="{{ project.title }}" 
-                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    {% elif project.featured_image_url %}
-                    <img src="{{ project.featured_image_url }}" alt="{{ project.title }}" 
-                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    {% else %}
-                    <div class="w-full h-full bg-gradient-to-br from-primary/60 to-secondary/60 flex items-center justify-center">
-                        <svg class="w-16 h-16 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                        </svg>
-                    </div>
-                    {% endif %}
-                    
-                    <!-- Category badge -->
-                    {% if project.category %}
-                    <span class="absolute top-4 left-4 bg-white/90 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
-                        {{ project.category.name }}
-                    </span>
-                    {% endif %}
-                    
-                    {% if project.is_urgent %}
-                    <span class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium animate-pulse">
-                        {% trans "Urgent" %}
-                    </span>
-                    {% endif %}
-                </div>
-                
-                <!-- Content -->
-                <div class="p-6">
-                    <h3 class="font-display text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
-                        <a href="{{ project.get_absolute_url }}">{{ project.title }}</a>
-                    </h3>
-                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ project.short_description }}</p>
-                    
-                    <!-- Progress bar -->
-                    <div class="mb-4">
-                        <div class="flex justify-between text-sm mb-2">
-                            <span class="font-semibold text-primary">{{ project.current_amount|floatformat:0 }} €</span>
-                            <span class="text-gray-500">{% trans "sur" %} {{ project.goal_amount|floatformat:0 }} €</span>
+            <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow" data-animate>
+                <div class="grid md:grid-cols-3 gap-0">
+                    <!-- Image -->
+                    <div class="relative h-64 md:h-auto">
+                        {% if project.featured_image %}
+                        <img src="{{ project.featured_image.url }}" alt="{{ project.title }}" class="absolute inset-0 w-full h-full object-cover">
+                        {% elif project.featured_image_url %}
+                        <img src="{{ project.featured_image_url }}" alt="{{ project.title }}" class="absolute inset-0 w-full h-full object-cover">
+                        {% else %}
+                        <div class="absolute inset-0 bg-gradient-to-br from-primary to-secondary"></div>
+                        {% endif %}
+                        {% if project.is_urgent %}
+                        <div class="absolute top-4 left-4">
+                            <span class="px-3 py-1 bg-red-500 text-white text-xs font-semibold rounded-full flex items-center gap-1">
+                                <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                                {% trans "Urgent" %}
+                            </span>
                         </div>
-                        <div class="progress-bar" data-progress="{{ project.progress_percentage }}">
-                            <div class="progress-bar-fill"></div>
-                        </div>
+                        {% endif %}
                     </div>
                     
-                    <a href="{{ project.get_absolute_url }}" 
-                       class="inline-flex items-center text-primary hover:text-primary-dark font-semibold">
-                        {% trans "En savoir plus" %}
-                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </a>
+                    <!-- Content -->
+                    <div class="md:col-span-2 p-8">
+                        <div class="flex flex-wrap items-center gap-4 mb-4">
+                            {% if project.category %}
+                            <span class="text-primary text-sm font-semibold">{{ project.category.name }}</span>
+                            {% endif %}
+                            <span class="text-gray-400 text-sm flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                </svg>
+                                {{ project.location }}
+                            </span>
+                        </div>
+                        
+                        <h3 class="font-display text-2xl font-bold text-charcoal mb-3">
+                            <a href="{{ project.get_absolute_url }}" class="hover:text-primary transition-colors">{{ project.title }}</a>
+                        </h3>
+                        <p class="text-gray-600 mb-6 line-clamp-2">{{ project.short_description }}</p>
+                        
+                        <!-- Progress -->
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2 text-sm">
+                                <span class="font-bold text-charcoal">{{ project.current_amount|floatformat:0 }} € {% trans "collectés" %}</span>
+                                <span class="text-gray-500">{{ project.progress_percentage|floatformat:0 }}%</span>
+                            </div>
+                            <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-primary rounded-full" style="width: {{ project.progress_percentage }}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2 text-sm text-gray-500">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                                </svg>
+                                {{ project.total_donors }} {% trans "soutiens" %}
+                            </div>
+                            <a href="{{ project.get_absolute_url }}" class="btn btn-primary text-sm">{% trans "Rejoindre" %}</a>
+                        </div>
+                    </div>
                 </div>
             </article>
             {% empty %}
-            <div class="col-span-3 text-center py-12">
-                <p class="text-gray-500">{% trans "Aucun projet pour le moment. Revenez bientôt !" %}</p>
-            </div>
+            <div class="text-center py-16 text-gray-500">{% trans "De nouvelles histoires arrivent bientôt..." %}</div>
             {% endfor %}
         </div>
     </div>
 </section>
 
-<!-- Donation CTA Section -->
-<section class="py-24 bg-gradient-to-br from-secondary to-secondary-dark text-white relative overflow-hidden">
-    <!-- Background decoration -->
+<!-- ========== YOUR ROLE ========== -->
+<section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16" data-animate>
+            <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{% trans "Votre rôle" %}</p>
+            <h2 class="font-display text-3xl sm:text-4xl font-bold text-charcoal mb-4">{% trans "Pas seulement donner. Appartenir." %}</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">{% trans "Chaque forme de soutien compte. Trouvez celle qui vous ressemble." %}</p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8" data-animate>
+            <div class="text-center p-8 rounded-2xl border-2 border-gray-100 hover:border-primary transition-colors group">
+                <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-primary/10 group-hover:bg-primary flex items-center justify-center transition-colors">
+                    <svg class="w-8 h-8 text-primary group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="font-display text-xl font-bold text-charcoal mb-3">{% trans "Donner" %}</h3>
+                <p class="text-gray-500 text-sm mb-6">{% trans "25€ = 1 kit scolaire complet. 50€ = 1 mois de soins. 100€ = 1 bourse mensuelle." %}</p>
+                <a href="{% url 'donations:donate' %}" class="text-primary font-semibold hover:underline">{% trans "Contribuer" %} &rarr;</a>
+            </div>
+            
+            <div class="text-center p-8 rounded-2xl border-2 border-gray-100 hover:border-primary transition-colors group">
+                <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-primary/10 group-hover:bg-primary flex items-center justify-center transition-colors">
+                    <svg class="w-8 h-8 text-primary group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </div>
+                <h3 class="font-display text-xl font-bold text-charcoal mb-3">{% trans "S'engager" %}</h3>
+                <p class="text-gray-500 text-sm mb-6">{% trans "Rejoignez nos missions sur le terrain. Partagez vos compétences. Donnez de votre temps." %}</p>
+                <a href="{% url 'core:contact' %}" class="text-primary font-semibold hover:underline">{% trans "Devenir bénévole" %} &rarr;</a>
+            </div>
+            
+            <div class="text-center p-8 rounded-2xl border-2 border-gray-100 hover:border-primary transition-colors group">
+                <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-primary/10 group-hover:bg-primary flex items-center justify-center transition-colors">
+                    <svg class="w-8 h-8 text-primary group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                    </svg>
+                </div>
+                <h3 class="font-display text-xl font-bold text-charcoal mb-3">{% trans "Partager" %}</h3>
+                <p class="text-gray-500 text-sm mb-6">{% trans "Racontez notre histoire. Chaque partage ouvre une porte vers un nouveau soutien." %}</p>
+                <a href="{% url 'articles:list' %}" class="text-primary font-semibold hover:underline">{% trans "Nos récits" %} &rarr;</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== FINAL INVITATION ========== -->
+<section class="py-24 bg-primary text-white relative overflow-hidden">
     <div class="absolute inset-0 opacity-10">
-        <svg class="absolute top-0 right-0 w-96 h-96" viewBox="0 0 200 200">
-            <circle cx="100" cy="100" r="80" fill="currentColor"/>
-        </svg>
-        <svg class="absolute bottom-0 left-0 w-64 h-64" viewBox="0 0 200 200">
-            <circle cx="100" cy="100" r="80" fill="currentColor"/>
+        <svg class="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path fill="currentColor" d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,138.7C672,128,768,160,864,186.7C960,213,1056,235,1152,218.7C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
         </svg>
     </div>
     
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10" data-animate>
-        <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
-            {% trans "Votre don, leur avenir" %}
-        </h2>
-        <p class="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
-            {% trans "Chaque don, quelle que soit sa taille, fournit des ressources qui changent la vie d'une famille dans le besoin." %}
-        </p>
-        
-        <!-- Impact examples -->
-        <div class="grid grid-cols-3 gap-6 mb-10 max-w-xl mx-auto">
-            <div class="text-center p-4 bg-white/10 rounded-2xl">
-                <div class="text-2xl font-bold">25€</div>
-                <div class="text-sm text-white/70">{% trans "1 kit scolaire" %}</div>
-            </div>
-            <div class="text-center p-4 bg-white/10 rounded-2xl">
-                <div class="text-2xl font-bold">50€</div>
-                <div class="text-sm text-white/70">{% trans "Soins médicaux" %}</div>
-            </div>
-            <div class="text-center p-4 bg-white/10 rounded-2xl">
-                <div class="text-2xl font-bold">100€</div>
-                <div class="text-sm text-white/70">{% trans "1 mois de bourse" %}</div>
-            </div>
-        </div>
-        
+    <div class="max-w-4xl mx-auto px-4 text-center relative z-10" data-animate>
+        <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">{% trans "Le village vous attend." %}</h2>
+        <p class="text-xl text-white/80 mb-10 max-w-2xl mx-auto">{% trans "Chaque histoire que vous avez lue est vraie. Chaque visage est réel. La prochaine page s'écrit avec vous." %}</p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{% url 'donations:donate' %}" 
-               class="bg-white text-secondary hover:bg-gray-100 px-10 py-4 rounded-xl font-semibold text-lg transition-all hover:shadow-xl">
-                {% trans "Faire un don maintenant" %}
-            </a>
-            <a href="{% url 'donations:material_contribution' %}" 
-               class="border-2 border-white text-white hover:bg-white/10 px-10 py-4 rounded-xl font-semibold text-lg transition-all">
-                {% trans "Contribuer en matériel" %}
-            </a>
+            <a href="{% url 'donations:donate' %}" class="btn bg-white text-primary hover:bg-gray-100 text-lg">{% trans "Écrire le prochain chapitre" %}</a>
+            <a href="{% url 'projects:list' %}" class="btn bg-transparent border-2 border-white text-white hover:bg-white/10 text-lg">{% trans "Explorer les projets" %}</a>
         </div>
-    </div>
-</section>
-
-<!-- Testimonials Section -->
-{% if testimonials %}
-<section class="py-24 bg-background">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12" data-animate>
-            <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-900 mb-4">{% trans "Témoignages" %}</h2>
-            <p class="text-gray-600">{% trans "Les voix de ceux dont la vie a été transformée" %}</p>
-        </div>
-        
-        <div class="grid md:grid-cols-3 gap-8">
-            {% for testimonial in testimonials %}
-            <div class="bg-white rounded-3xl p-8 shadow-lg" data-animate>
-                <svg class="w-10 h-10 text-primary/30 mb-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-                </svg>
-                <p class="text-gray-600 mb-6 italic">"{{ testimonial.quote }}"</p>
-                <div class="flex items-center">
-                    {% if testimonial.photo %}
-                    <img src="{{ testimonial.photo.url }}" alt="{{ testimonial.name }}" 
-                         class="w-12 h-12 rounded-full object-cover mr-4">
-                    {% else %}
-                    <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mr-4">
-                        <span class="text-primary font-bold">{{ testimonial.name|slice:":1" }}</span>
-                    </div>
-                    {% endif %}
-                    <div>
-                        <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
-                        <p class="text-sm text-gray-500">{{ testimonial.location }}</p>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-{% endif %}
-
-<!-- Newsletter Section -->
-<section class="py-16 bg-white border-t border-gray-100">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center" data-animate>
-        <h2 class="font-display text-2xl font-bold text-gray-900 mb-4">{% trans "Restez informé" %}</h2>
-        <p class="text-gray-600 mb-6">
-            {% trans "Recevez nos actualités et suivez l'impact de votre soutien." %}
-        </p>
-        
-        <form action="{% url 'core:home' %}" method="post" class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            {% csrf_token %}
-            <input type="email" name="email" placeholder="{% trans 'Votre email' %}" required
-                   class="flex-1 px-6 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none">
-            <button type="submit" 
-                    class="bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-xl font-semibold transition-colors">
-                {% trans "S'inscrire" %}
-            </button>
-        </form>
     </div>
 </section>
 {% endblock %}

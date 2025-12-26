@@ -5,46 +5,48 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="bg-gradient-to-br from-primary/5 to-background py-20">
+<section class="relative py-24 bg-gradient-hero overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center" data-animate>
-            <h1 class="font-display text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-                {% trans "Nos Projets" %}
+        <div class="text-center max-w-3xl mx-auto" data-animate>
+            <div class="section-divider"></div>
+            <h1 class="font-display text-4xl sm:text-5xl font-bold text-charcoal mb-6">
+                {% trans "Histoires en cours" %}
             </h1>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                {% trans "Chaque projet est une histoire de transformation. Découvrez comment nous travaillons avec les communautés pour créer un changement durable." %}
+            <p class="text-xl text-gray-600 leading-relaxed">
+                {% trans "Chaque projet est un chapitre vivant. Suivez leur évolution, découvrez les visages derrière les chiffres." %}
             </p>
         </div>
     </div>
 </section>
 
 <!-- Filters -->
-<section class="py-8 bg-white border-b">
+<section class="py-6 bg-white border-b sticky top-20 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-wrap items-center gap-4">
-            <span class="text-gray-600 font-medium">{% trans "Filtrer par" %}:</span>
+            <span class="text-gray-500 text-sm font-medium">{% trans "Filtrer" %}:</span>
             
             <!-- Category Filter -->
             <div class="flex flex-wrap gap-2">
                 <a href="{% url 'projects:list' %}" 
-                   class="px-4 py-2 rounded-full text-sm font-medium transition-colors
-                          {% if not current_category %}bg-primary text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+                   class="px-4 py-2 rounded-full text-sm font-medium transition-all
+                          {% if not current_category %}bg-primary text-white shadow-md{% else %}bg-gray-100 text-gray-600 hover:bg-gray-200{% endif %}">
                     {% trans "Tous" %}
                 </a>
                 {% for category in categories %}
                 <a href="{% url 'projects:list' %}?category={{ category.slug }}" 
-                   class="px-4 py-2 rounded-full text-sm font-medium transition-colors
-                          {% if current_category == category.slug %}bg-primary text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+                   class="px-4 py-2 rounded-full text-sm font-medium transition-all
+                          {% if current_category == category.slug %}bg-primary text-white shadow-md{% else %}bg-gray-100 text-gray-600 hover:bg-gray-200{% endif %}">
                     {{ category.name }}
                 </a>
                 {% endfor %}
             </div>
             
-            <!-- Status Filter -->
-            <div class="flex gap-2 ml-auto">
+            <!-- Urgent Filter -->
+            <div class="ml-auto">
                 <a href="{% url 'projects:list' %}?status=urgent" 
-                   class="px-4 py-2 rounded-full text-sm font-medium bg-red-100 text-red-700 hover:bg-red-200 transition-colors">
-                    🔥 {% trans "Urgent" %}
+                   class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-red-50 text-red-600 hover:bg-red-100 transition-all">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                    {% trans "Urgent" %}
                 </a>
             </div>
         </div>
@@ -56,31 +58,30 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {% for project in projects %}
-            <article class="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300" data-animate>
+            <article class="story-card card group" data-animate>
                 <!-- Image -->
-                <a href="{{ project.get_absolute_url }}" class="block relative h-56 overflow-hidden">
+                <a href="{{ project.get_absolute_url }}" class="block relative h-52 overflow-hidden">
                     {% if project.featured_image %}
                     <img src="{{ project.featured_image.url }}" alt="{{ project.title }}" 
-                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     {% elif project.featured_image_url %}
                     <img src="{{ project.featured_image_url }}" alt="{{ project.title }}" 
-                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     {% else %}
-                    <div class="w-full h-full bg-gradient-to-br from-primary/40 to-secondary/40 flex items-center justify-center">
-                        <svg class="w-16 h-16 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                        </svg>
-                    </div>
+                    <div class="w-full h-full bg-gradient-to-br from-primary/30 to-secondary/30"></div>
                     {% endif %}
                     
-                    {% if project.category %}
-                    <span class="absolute top-4 left-4 bg-white/90 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
-                        {{ project.category.name }}
-                    </span>
-                    {% endif %}
+                    <!-- Badges -->
+                    <div class="absolute top-4 left-4 flex gap-2">
+                        {% if project.category %}
+                        <span class="badge badge-primary backdrop-blur-sm bg-white/90">
+                            {{ project.category.name }}
+                        </span>
+                        {% endif %}
+                    </div>
                     
                     {% if project.is_urgent %}
-                    <span class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium animate-pulse">
+                    <span class="absolute top-4 right-4 badge badge-urgent">
                         {% trans "Urgent" %}
                     </span>
                     {% endif %}
@@ -88,49 +89,50 @@
                 
                 <!-- Content -->
                 <div class="p-6">
-                    <div class="flex items-center text-sm text-gray-500 mb-2">
-                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                         </svg>
                         {{ project.location }}
                     </div>
                     
-                    <h3 class="font-display text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                    <h3 class="font-display text-xl font-bold text-charcoal mb-3 group-hover:text-primary transition-colors">
                         <a href="{{ project.get_absolute_url }}">{{ project.title }}</a>
                     </h3>
-                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ project.short_description }}</p>
+                    <p class="text-gray-500 text-sm mb-5 line-clamp-2">{{ project.short_description }}</p>
                     
                     <!-- Progress -->
-                    <div class="mb-4">
+                    <div class="mb-5">
                         <div class="flex justify-between text-sm mb-2">
-                            <span class="font-semibold text-primary">{{ project.current_amount|floatformat:0 }} €</span>
-                            <span class="text-gray-500">{% trans "sur" %} {{ project.goal_amount|floatformat:0 }} €</span>
+                            <span class="font-bold text-primary">{{ project.current_amount|floatformat:0 }} €</span>
+                            <span class="text-gray-400">{{ project.progress_percentage|floatformat:0 }}%</span>
                         </div>
-                        <div class="progress-bar" data-progress="{{ project.progress_percentage }}">
+                        <div class="progress-bar">
                             <div class="progress-bar-fill" style="width: {{ project.progress_percentage }}%"></div>
                         </div>
-                        <div class="flex justify-between text-xs text-gray-500 mt-1">
-                            <span>{{ project.progress_percentage|floatformat:0 }}% {% trans "atteint" %}</span>
-                            <span>{{ project.total_donors }} {% trans "donateurs" %}</span>
+                        <div class="flex justify-between text-xs text-gray-400 mt-2">
+                            <span>{% trans "Objectif" %}: {{ project.goal_amount|floatformat:0 }} €</span>
+                            <span>{{ project.total_donors }} {% trans "soutiens" %}</span>
                         </div>
                     </div>
                     
-                    <a href="{{ project.get_absolute_url }}" 
-                       class="inline-flex items-center text-primary hover:text-primary-dark font-semibold">
-                        {% trans "Découvrir" %}
-                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ project.get_absolute_url }}" class="inline-flex items-center gap-2 text-primary font-semibold text-sm group-hover:gap-3 transition-all">
+                        {% trans "Lire l'histoire" %}
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                     </a>
                 </div>
             </article>
             {% empty %}
-            <div class="col-span-3 text-center py-16">
-                <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                </svg>
-                <h3 class="text-xl font-semibold text-gray-700 mb-2">{% trans "Aucun projet pour le moment" %}</h3>
-                <p class="text-gray-500">{% trans "De nouveaux projets seront bientôt disponibles. Revenez nous voir !" %}</p>
+            <div class="col-span-3 text-center py-20">
+                <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gray-100 flex items-center justify-center">
+                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-charcoal mb-2">{% trans "De nouvelles histoires arrivent" %}</h3>
+                <p class="text-gray-500">{% trans "Revenez bientôt pour découvrir nos prochains projets." %}</p>
             </div>
             {% endfor %}
         </div>
@@ -140,17 +142,17 @@
         <div class="flex justify-center mt-12">
             <nav class="flex items-center space-x-2">
                 {% if projects.has_previous %}
-                <a href="?page={{ projects.previous_page_number }}" class="px-4 py-2 rounded-lg bg-white border hover:bg-gray-50">
+                <a href="?page={{ projects.previous_page_number }}" class="px-4 py-2 rounded-xl bg-white border border-gray-200 hover:bg-gray-50 text-gray-600">
                     {% trans "Précédent" %}
                 </a>
                 {% endif %}
                 
-                <span class="px-4 py-2 text-gray-600">
-                    {% trans "Page" %} {{ projects.number }} {% trans "sur" %} {{ projects.paginator.num_pages }}
+                <span class="px-4 py-2 text-gray-500">
+                    {{ projects.number }} / {{ projects.paginator.num_pages }}
                 </span>
                 
                 {% if projects.has_next %}
-                <a href="?page={{ projects.next_page_number }}" class="px-4 py-2 rounded-lg bg-white border hover:bg-gray-50">
+                <a href="?page={{ projects.next_page_number }}" class="px-4 py-2 rounded-xl bg-white border border-gray-200 hover:bg-gray-50 text-gray-600">
                     {% trans "Suivant" %}
                 </a>
                 {% endif %}
@@ -161,14 +163,14 @@
 </section>
 
 <!-- CTA Section -->
-<section class="py-16 bg-primary text-white">
+<section class="py-20 bg-primary text-white">
     <div class="max-w-4xl mx-auto px-4 text-center">
         <h2 class="font-display text-3xl font-bold mb-4">{% trans "Vous avez une idée de projet ?" %}</h2>
-        <p class="text-white/80 mb-8">
-            {% trans "Nous sommes toujours ouverts à de nouvelles initiatives qui peuvent aider les communautés." %}
+        <p class="text-white/80 mb-8 max-w-xl mx-auto">
+            {% trans "Nous sommes toujours ouverts aux nouvelles initiatives qui peuvent transformer des vies." %}
         </p>
-        <a href="{% url 'core:contact' %}" class="inline-block bg-white text-primary hover:bg-gray-100 px-8 py-4 rounded-xl font-semibold transition-colors">
-            {% trans "Contactez-nous" %}
+        <a href="{% url 'core:contact' %}" class="btn btn-white">
+            {% trans "Proposer un projet" %}
         </a>
     </div>
 </section>
