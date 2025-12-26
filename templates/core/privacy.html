@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Politique de confidentialité" %}{% endblock %}
+
+{% block content %}
+<section class="py-16 bg-background">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="font-display text-4xl font-bold text-gray-900 mb-8">{% trans "Politique de confidentialité" %}</h1>
+        
+        <div class="prose prose-lg max-w-none">
+            <p>{% trans "Dernière mise à jour :" %} {% now "d F Y" %}</p>
+            
+            <h2>{% trans "Protection de vos données" %}</h2>
+            <p>{% trans "La Fondation Denise Time Mafodom (FDTM) s'engage à protéger votre vie privée et vos données personnelles." %}</p>
+            
+            <h2>{% trans "Données collectées" %}</h2>
+            <p>{% trans "Nous collectons uniquement les données nécessaires pour :" %}</p>
+            <ul>
+                <li>{% trans "Traiter vos dons" %}</li>
+                <li>{% trans "Vous envoyer des informations sur nos projets" %}</li>
+                <li>{% trans "Répondre à vos questions" %}</li>
+            </ul>
+            
+            <h2>{% trans "Utilisation des données" %}</h2>
+            <p>{% trans "Vos données ne sont jamais vendues ni partagées avec des tiers à des fins commerciales." %}</p>
+            
+            <h2>{% trans "Vos droits" %}</h2>
+            <p>{% trans "Vous avez le droit d'accéder, de rectifier ou de supprimer vos données personnelles à tout moment." %}</p>
+            
+            <h2>{% trans "Contact" %}</h2>
+            <p>{% trans "Pour toute question concernant vos données, contactez-nous à" %} contact@fdtm.org</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

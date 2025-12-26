@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Merci pour votre don" %}{% endblock %}
+
+{% block content %}
+<section class="min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-secondary/5 to-primary/5 py-20">
+    <div class="max-w-2xl mx-auto px-4 text-center">
+        <!-- Success Icon -->
+        <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-8 animate-fade-in">
+            <svg class="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+            </svg>
+        </div>
+        
+        <h1 class="font-display text-4xl font-bold text-gray-900 mb-4">{% trans "Merci infiniment !" %}</h1>
+        
+        <p class="text-xl text-gray-600 mb-8">
+            {% trans "Votre générosité change des vies. Grâce à vous, nous pouvons continuer à construire un avenir meilleur pour les communautés camerounaises." %}
+        </p>
+        
+        <div class="bg-white rounded-2xl p-8 shadow-lg mb-8">
+            <p class="text-gray-600 mb-4">{% trans "Un reçu de don a été envoyé à votre adresse email." %}</p>
+            <p class="text-sm text-gray-500">
+                {% trans "Ce don est déductible de vos impôts. Conservez votre reçu pour votre déclaration fiscale." %}
+            </p>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'projects:list' %}" class="bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-xl font-semibold transition-colors">
+                {% trans "Découvrir nos projets" %}
+            </a>
+            <a href="{% url 'core:home' %}" class="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-3 rounded-xl font-semibold transition-colors">
+                {% trans "Retour à l'accueil" %}
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

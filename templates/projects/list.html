@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Nos Projets" %}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-gradient-to-br from-primary/5 to-background py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center" data-animate>
+            <h1 class="font-display text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+                {% trans "Nos Projets" %}
+            </h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                {% trans "Chaque projet est une histoire de transformation. Découvrez comment nous travaillons avec les communautés pour créer un changement durable." %}
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Filters -->
+<section class="py-8 bg-white border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap items-center gap-4">
+            <span class="text-gray-600 font-medium">{% trans "Filtrer par" %}:</span>
+            
+            <!-- Category Filter -->
+            <div class="flex flex-wrap gap-2">
+                <a href="{% url 'projects:list' %}" 
+                   class="px-4 py-2 rounded-full text-sm font-medium transition-colors
+                          {% if not current_category %}bg-primary text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+                    {% trans "Tous" %}
+                </a>
+                {% for category in categories %}
+                <a href="{% url 'projects:list' %}?category={{ category.slug }}" 
+                   class="px-4 py-2 rounded-full text-sm font-medium transition-colors
+                          {% if current_category == category.slug %}bg-primary text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+                    {{ category.name }}
+                </a>
+                {% endfor %}
+            </div>
+            
+            <!-- Status Filter -->
+            <div class="flex gap-2 ml-auto">
+                <a href="{% url 'projects:list' %}?status=urgent" 
+                   class="px-4 py-2 rounded-full text-sm font-medium bg-red-100 text-red-700 hover:bg-red-200 transition-colors">
+                    🔥 {% trans "Urgent" %}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Grid -->
+<section class="py-16 bg-background">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for project in projects %}
+            <article class="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300" data-animate>
+                <!-- Image -->
+                <a href="{{ project.get_absolute_url }}" class="block relative h-56 overflow-hidden">
+                    {% if project.featured_image %}
+                    <img src="{{ project.featured_image.url }}" alt="{{ project.title }}" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    {% elif project.featured_image_url %}
+                    <img src="{{ project.featured_image_url }}" alt="{{ project.title }}" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    {% else %}
+                    <div class="w-full h-full bg-gradient-to-br from-primary/40 to-secondary/40 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                    </div>
+                    {% endif %}
+                    
+                    {% if project.category %}
+                    <span class="absolute top-4 left-4 bg-white/90 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+                        {{ project.category.name }}
+                    </span>
+                    {% endif %}
+                    
+                    {% if project.is_urgent %}
+                    <span class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium animate-pulse">
+                        {% trans "Urgent" %}
+                    </span>
+                    {% endif %}
+                </a>
+                
+                <!-- Content -->
+                <div class="p-6">
+                    <div class="flex items-center text-sm text-gray-500 mb-2">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        </svg>
+                        {{ project.location }}
+                    </div>
+                    
+                    <h3 class="font-display text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                        <a href="{{ project.get_absolute_url }}">{{ project.title }}</a>
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ project.short_description }}</p>
+                    
+                    <!-- Progress -->
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="font-semibold text-primary">{{ project.current_amount|floatformat:0 }} €</span>
+                            <span class="text-gray-500">{% trans "sur" %} {{ project.goal_amount|floatformat:0 }} €</span>
+                        </div>
+                        <div class="progress-bar" data-progress="{{ project.progress_percentage }}">
+                            <div class="progress-bar-fill" style="width: {{ project.progress_percentage }}%"></div>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-500 mt-1">
+                            <span>{{ project.progress_percentage|floatformat:0 }}% {% trans "atteint" %}</span>
+                            <span>{{ project.total_donors }} {% trans "donateurs" %}</span>
+                        </div>
+                    </div>
+                    
+                    <a href="{{ project.get_absolute_url }}" 
+                       class="inline-flex items-center text-primary hover:text-primary-dark font-semibold">
+                        {% trans "Découvrir" %}
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </article>
+            {% empty %}
+            <div class="col-span-3 text-center py-16">
+                <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                </svg>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">{% trans "Aucun projet pour le moment" %}</h3>
+                <p class="text-gray-500">{% trans "De nouveaux projets seront bientôt disponibles. Revenez nous voir !" %}</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if projects.has_other_pages %}
+        <div class="flex justify-center mt-12">
+            <nav class="flex items-center space-x-2">
+                {% if projects.has_previous %}
+                <a href="?page={{ projects.previous_page_number }}" class="px-4 py-2 rounded-lg bg-white border hover:bg-gray-50">
+                    {% trans "Précédent" %}
+                </a>
+                {% endif %}
+                
+                <span class="px-4 py-2 text-gray-600">
+                    {% trans "Page" %} {{ projects.number }} {% trans "sur" %} {{ projects.paginator.num_pages }}
+                </span>
+                
+                {% if projects.has_next %}
+                <a href="?page={{ projects.next_page_number }}" class="px-4 py-2 rounded-lg bg-white border hover:bg-gray-50">
+                    {% trans "Suivant" %}
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-primary text-white">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+        <h2 class="font-display text-3xl font-bold mb-4">{% trans "Vous avez une idée de projet ?" %}</h2>
+        <p class="text-white/80 mb-8">
+            {% trans "Nous sommes toujours ouverts à de nouvelles initiatives qui peuvent aider les communautés." %}
+        </p>
+        <a href="{% url 'core:contact' %}" class="inline-block bg-white text-primary hover:bg-gray-100 px-8 py-4 rounded-xl font-semibold transition-colors">
+            {% trans "Contactez-nous" %}
+        </a>
+    </div>
+</section>
+{% endblock %}

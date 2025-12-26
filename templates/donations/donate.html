@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Faire un don" %}{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="font-display text-4xl font-bold text-gray-900 mb-4">{% trans "Votre don, leur avenir" %}</h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            {% trans "Chaque contribution, quelle que soit sa taille, crée un impact durable dans la vie des familles camerounaises." %}
+        </p>
+    </div>
+</section>
+
+<!-- Donation Form -->
+<section class="py-16 bg-background">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+            <!-- Form Header -->
+            <div class="bg-gradient-to-r from-primary to-primary-dark p-8 text-white text-center">
+                <h2 class="font-display text-2xl font-bold mb-2">{% trans "Formulaire de don" %}</h2>
+                <p class="text-white/80">{% trans "Sécurisé et 100% dédié à notre mission" %}</p>
+            </div>
+            
+            <!-- Form Body -->
+            <div class="p-8" x-data="donationForm()">
+                <!-- Amount Selection -->
+                <div class="mb-8">
+                    <label class="block text-gray-700 font-semibold mb-4">{% trans "Montant du don" %}</label>
+                    <div class="grid grid-cols-3 gap-4 mb-4">
+                        <button type="button" @click="amount = 25" 
+                                :class="amount === 25 ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                                class="py-4 rounded-xl font-bold text-xl transition-colors">25€</button>
+                        <button type="button" @click="amount = 50"
+                                :class="amount === 50 ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                                class="py-4 rounded-xl font-bold text-xl transition-colors">50€</button>
+                        <button type="button" @click="amount = 100"
+                                :class="amount === 100 ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                                class="py-4 rounded-xl font-bold text-xl transition-colors">100€</button>
+                    </div>
+                    <div class="relative">
+                        <input type="number" x-model="amount" min="5" step="1"
+                               class="w-full px-6 py-4 text-xl font-bold text-center rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-0"
+                               placeholder="{% trans 'Autre montant' %}">
+                        <span class="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 font-bold">€</span>
+                    </div>
+                </div>
+                
+                <!-- Project Selection -->
+                <div class="mb-8">
+                    <label class="block text-gray-700 font-semibold mb-4">{% trans "Allouer à" %}</label>
+                    <select x-model="projectId" class="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-primary">
+                        <option value="">{% trans "Là où c'est le plus nécessaire (fonds général)" %}</option>
+                        {% for project in projects %}
+                        <option value="{{ project.pk }}">{{ project.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- Donor Info -->
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">{% trans "Nom complet" %} *</label>
+                        <input type="text" x-model="name" required
+                               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">{% trans "Email" %} *</label>
+                        <input type="email" x-model="email" required
+                               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary">
+                    </div>
+                </div>
+                
+                <!-- Message -->
+                <div class="mb-8">
+                    <label class="block text-gray-700 font-medium mb-2">{% trans "Message (optionnel)" %}</label>
+                    <textarea x-model="message" rows="3"
+                              class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary"
+                              placeholder="{% trans 'Laissez un message d'encouragement...' %}"></textarea>
+                </div>
+                
+                <!-- Anonymous Option -->
+                <div class="mb-8">
+                    <label class="flex items-center">
+                        <input type="checkbox" x-model="anonymous" class="w-5 h-5 rounded text-primary focus:ring-primary">
+                        <span class="ml-3 text-gray-700">{% trans "Faire un don anonyme" %}</span>
+                    </label>
+                </div>
+                
+                <!-- Payment Method -->
+                <div class="mb-8">
+                    <label class="block text-gray-700 font-semibold mb-4">{% trans "Mode de paiement" %}</label>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <button type="button" @click="paymentMethod = 'stripe'"
+                                :class="paymentMethod === 'stripe' ? 'border-primary bg-primary/5' : 'border-gray-200'"
+                                class="p-6 rounded-xl border-2 text-left transition-colors">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-8 h-8" viewBox="0 0 24 24" fill="#635bff">
+                                        <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-900">{% trans "Carte bancaire" %}</p>
+                                    <p class="text-sm text-gray-500">Visa, Mastercard, Amex</p>
+                                </div>
+                            </div>
+                        </button>
+                        
+                        <button type="button" @click="paymentMethod = 'fapshi'"
+                                :class="paymentMethod === 'fapshi' ? 'border-primary bg-primary/5' : 'border-gray-200'"
+                                class="p-6 rounded-xl border-2 text-left transition-colors">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-8 h-8 text-yellow-600" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M17 2a3 3 0 013 3v14a3 3 0 01-3 3H7a3 3 0 01-3-3V5a3 3 0 013-3h10zm-5 16a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm0-5a1 1 0 01-1-1V7a1 1 0 112 0v5a1 1 0 01-1 1z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-900">{% trans "Mobile Money" %}</p>
+                                    <p class="text-sm text-gray-500">MTN, Orange Money</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Phone for Mobile Money -->
+                <div x-show="paymentMethod === 'fapshi'" class="mb-8" x-cloak>
+                    <label class="block text-gray-700 font-medium mb-2">{% trans "Numéro de téléphone" %} *</label>
+                    <input type="tel" x-model="phone" 
+                           class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary"
+                           placeholder="+237 6XX XXX XXX">
+                </div>
+                
+                <!-- Submit -->
+                <button type="button" @click="submitDonation()"
+                        :disabled="!isValid"
+                        class="w-full bg-primary hover:bg-primary-dark disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-4 rounded-xl font-semibold text-lg transition-colors">
+                    <span x-text="'{% trans "Donner" %} ' + amount + '€'"></span>
+                </button>
+                
+                <!-- Security Note -->
+                <p class="text-center text-sm text-gray-500 mt-6">
+                    🔒 {% trans "Paiement sécurisé. Vos données sont protégées." %}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Impact Examples -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="font-display text-2xl font-bold text-center text-gray-900 mb-12">{% trans "Votre impact" %}</h2>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+            {% for impact in impact_examples %}
+            <div class="text-center p-6 bg-background rounded-2xl">
+                <div class="text-3xl font-bold text-primary mb-2">{{ impact.amount|floatformat:0 }}€</div>
+                <p class="text-gray-600">{{ impact.description }}</p>
+            </div>
+            {% empty %}
+            <div class="text-center p-6 bg-background rounded-2xl">
+                <div class="text-3xl font-bold text-primary mb-2">25€</div>
+                <p class="text-gray-600">{% trans "Un kit scolaire complet pour un enfant" %}</p>
+            </div>
+            <div class="text-center p-6 bg-background rounded-2xl">
+                <div class="text-3xl font-bold text-primary mb-2">50€</div>
+                <p class="text-gray-600">{% trans "Soins médicaux pour une famille" %}</p>
+            </div>
+            <div class="text-center p-6 bg-background rounded-2xl">
+                <div class="text-3xl font-bold text-primary mb-2">100€</div>
+                <p class="text-gray-600">{% trans "Une bourse mensuelle pour un étudiant" %}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<script>
+function donationForm() {
+    return {
+        amount: 50,
+        projectId: '',
+        name: '',
+        email: '',
+        phone: '',
+        message: '',
+        anonymous: false,
+        paymentMethod: 'stripe',
+        
+        get isValid() {
+            const baseValid = this.amount >= 5 && this.name && this.email;
+            if (this.paymentMethod === 'fapshi') {
+                return baseValid && this.phone;
+            }
+            return baseValid;
+        },
+        
+        submitDonation() {
+            if (!this.isValid) return;
+            
+            // Build form data
+            const formData = {
+                amount: this.amount,
+                project_id: this.projectId,
+                name: this.name,
+                email: this.email,
+                phone: this.phone,
+                message: this.message,
+                anonymous: this.anonymous,
+                payment_method: this.paymentMethod
+            };
+            
+            // Submit to backend (would be implemented with actual API call)
+            console.log('Submitting donation:', formData);
+            alert('{% trans "Redirection vers le paiement..." %}');
+        }
+    }
+}
+</script>
+{% endblock %}

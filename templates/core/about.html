@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "À propos" %}{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="relative py-24 bg-gradient-to-br from-secondary/5 to-primary/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto">
+            <h1 class="font-display text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+                {% trans "Fondation Denise Time Mafodom" %}
+            </h1>
+            <p class="text-xl text-gray-600">
+                {% trans "Une organisation à but non lucratif dédiée à transformer les vies dans les communautés camerounaises par une action compatissante et durable." %}
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Mission & Vision -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-16">
+            <div class="bg-background rounded-3xl p-10" data-animate>
+                <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <h2 class="font-display text-2xl font-bold text-gray-900 mb-4">{% trans "Notre Mission" %}</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    {{ settings.mission_text|default:_("Allumer l'espoir, autonomiser les vies et transformer les communautés par notre humanité partagée. Nous défendons la solidarité humaine en créant des voies d'opportunité grâce à une éducation transformatrice, des échanges culturels dynamiques et un développement social durable.") }}
+                </p>
+            </div>
+            
+            <div class="bg-background rounded-3xl p-10" data-animate>
+                <div class="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mb-6">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                </div>
+                <h2 class="font-display text-2xl font-bold text-gray-900 mb-4">{% trans "Notre Vision" %}</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    {{ settings.vision_text|default:_("Un monde uni par la compassion, où chaque communauté s'épanouit dans la dignité et avec un but. Nous envisageons un avenir où la compassion transcende toutes les frontières géographiques, culturelles et économiques.") }}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Values -->
+<section class="py-20 bg-gray-900 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="font-display text-3xl font-bold text-center mb-16">{% trans "Nos Valeurs Fondamentales" %}</h2>
+        
+        <div class="grid md:grid-cols-3 gap-12">
+            <div class="text-center" data-animate>
+                <div class="w-20 h-20 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <h3 class="font-display text-xl font-bold mb-3">{% trans "Impact Direct" %}</h3>
+                <p class="text-gray-400">
+                    {% trans "Chaque don atteint directement ceux qui en ont besoin. Pas de bureaucratie, juste de l'action." %}
+                </p>
+            </div>
+            
+            <div class="text-center" data-animate>
+                <div class="w-20 h-20 bg-accent/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-10 h-10 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                </div>
+                <h3 class="font-display text-xl font-bold mb-3">{% trans "Transparence" %}</h3>
+                <p class="text-gray-400">
+                    {% trans "Nous rendons compte de chaque centime. Suivez l'impact de votre contribution en temps réel." %}
+                </p>
+            </div>
+            
+            <div class="text-center" data-animate>
+                <div class="w-20 h-20 bg-secondary/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-10 h-10 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                </div>
+                <h3 class="font-display text-xl font-bold mb-3">{% trans "Durabilité" %}</h3>
+                <p class="text-gray-400">
+                    {% trans "Nous visons un changement durable, pas des solutions temporaires. Construire pour les générations futures." %}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team -->
+{% if team_members %}
+<section class="py-20 bg-background">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="font-display text-3xl font-bold text-center text-gray-900 mb-4">{% trans "Notre Équipe" %}</h2>
+        <p class="text-gray-600 text-center max-w-2xl mx-auto mb-12">
+            {% trans "Des personnes passionnées unies par une vision commune de changement." %}
+        </p>
+        
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {% for member in team_members %}
+            <div class="bg-white rounded-2xl overflow-hidden shadow-lg text-center" data-animate>
+                <div class="h-48 overflow-hidden">
+                    {% if member.photo %}
+                    <img src="{{ member.photo.url }}" alt="{{ member.name }}" class="w-full h-full object-cover">
+                    {% else %}
+                    <div class="w-full h-full bg-gradient-to-br from-primary/40 to-secondary/40 flex items-center justify-center">
+                        <span class="text-4xl font-bold text-white">{{ member.name|slice:":1" }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="p-6">
+                    <h3 class="font-display font-bold text-gray-900">{{ member.name }}</h3>
+                    <p class="text-primary text-sm">{{ member.title }}</p>
+                    {% if member.bio %}
+                    <p class="text-gray-500 text-sm mt-2 line-clamp-2">{{ member.bio }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Partners -->
+{% if partners %}
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="font-display text-2xl font-bold text-center text-gray-900 mb-12">{% trans "Nos Partenaires" %}</h2>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center">
+            {% for partner in partners %}
+            <a href="{{ partner.website }}" target="_blank" class="grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100">
+                <img src="{{ partner.logo.url }}" alt="{{ partner.name }}" class="max-h-16 mx-auto">
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA -->
+<section class="py-20 bg-primary text-white">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+        <h2 class="font-display text-3xl font-bold mb-4">{% trans "Rejoignez notre mission" %}</h2>
+        <p class="text-white/80 mb-8">
+            {% trans "Ensemble, nous pouvons créer un changement durable." %}
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'donations:donate' %}" class="bg-white text-primary hover:bg-gray-100 px-8 py-4 rounded-xl font-semibold transition-colors">
+                {% trans "Faire un don" %}
+            </a>
+            <a href="{% url 'core:contact' %}" class="border-2 border-white text-white hover:bg-white/10 px-8 py-4 rounded-xl font-semibold transition-colors">
+                {% trans "Nous contacter" %}
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" dir="ltr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+              content="{% block meta_description %}{% trans "Fondation Denise Time Mafodom - Construire un avenir plus lumineux, main dans la main" %}{% endblock %}">
+        <!-- Open Graph / Social Media -->
+        <meta property="og:title"
+              content="{% block og_title %}FDTM - Fondation Denise Time Mafodom{% endblock %}">
+        <meta property="og:description"
+              content="{% block og_description %}{% trans "Nous transformons des vies par une action compatissante au Cameroun" %}{% endblock %}">
+        <meta property="og:image"
+              content="{% block og_image %}{% static 'images/og-image.jpg' %}{% endblock %}">
+        <meta property="og:type" content="website">
+        <title>
+            {% block title %}FDTM{% endblock %}
+        | Fondation Denise Time Mafodom</title>
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+              rel="stylesheet">
+        <!-- Tailwind CSS CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // FDTM Brand Colors
+                        primary: {
+                            DEFAULT: '#C75B2A',
+                            light: '#E8A87C',
+                            dark: '#A34A22',
+                        },
+                        secondary: {
+                            DEFAULT: '#2D5A3D',
+                            light: '#4A8B5E',
+                            dark: '#1E3D29',
+                        },
+                        accent: {
+                            DEFAULT: '#D4A84B',
+                            light: '#E8C97A',
+                            dark: '#B08A3A',
+                        },
+                        background: '#FDF8F3',
+                        surface: '#FFFFFF',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        display: ['Outfit', 'Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s ease forwards',
+                        'fade-in': 'fadeIn 0.4s ease forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                    },
+                },
+            },
+        }
+        </script>
+        <!-- Custom Styles -->
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <!-- Alpine.js -->
+        <script defer
+                src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        {% block extra_head %}{% endblock %}
+    </head>
+    <body class="bg-background text-gray-800 antialiased"
+          x-data="{ mobileMenuOpen: false }">
+        <!-- Skip to content for accessibility -->
+        <a href="#main-content"
+           class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-white px-4 py-2 rounded-lg z-50">
+            {% trans "Aller au contenu principal" %}
+        </a>
+        <!-- Navigation -->
+        {% include 'components/navbar.html' %}
+        <!-- Main Content -->
+        <main id="main-content">
+            {% block content %}{% endblock %}
+        </main>
+        <!-- Footer -->
+        {% include 'components/footer.html' %}
+        <!-- Custom Scripts -->
+        <script src="{% static 'js/main.js' %}"></script>
+        {% block extra_scripts %}{% endblock %}
+    </body>
+</html>

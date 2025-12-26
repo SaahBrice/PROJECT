@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Mentions légales" %}{% endblock %}
+
+{% block content %}
+<section class="py-16 bg-background">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="font-display text-4xl font-bold text-gray-900 mb-8">{% trans "Mentions légales" %}</h1>
+        
+        <div class="prose prose-lg max-w-none">
+            <h2>{% trans "Éditeur du site" %}</h2>
+            <p>
+                <strong>Fondation Denise Time Mafodom (FDTM)</strong><br>
+                {% trans "Association à but non lucratif" %}<br>
+                Dschang, Cameroun
+            </p>
+            
+            <h2>{% trans "Directeur de publication" %}</h2>
+            <p>{% trans "Le représentant légal de la Fondation" %}</p>
+            
+            <h2>{% trans "Hébergement" %}</h2>
+            <p>{% trans "Ce site est hébergé par PythonAnywhere." %}</p>
+            
+            <h2>{% trans "Propriété intellectuelle" %}</h2>
+            <p>{% trans "L'ensemble du contenu de ce site (textes, images, vidéos) est la propriété de la FDTM ou de ses partenaires." %}</p>
+            
+            <h2>{% trans "Dons" %}</h2>
+            <p>{% trans "Les dons effectués sur ce site sont sécurisés et utilisés exclusivement pour financer les projets de la Fondation." %}</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

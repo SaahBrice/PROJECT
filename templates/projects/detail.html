@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+{% load static i18n humanize %}
+
+{% block title %}{{ project.title }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative h-[50vh] min-h-[400px] flex items-end overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0">
+        {% if project.featured_image %}
+        <img src="{{ project.featured_image.url }}" alt="{{ project.title }}" 
+             class="w-full h-full object-cover">
+        {% elif project.featured_image_url %}
+        <img src="{{ project.featured_image_url }}" alt="{{ project.title }}" 
+             class="w-full h-full object-cover">
+        {% else %}
+        <div class="w-full h-full bg-gradient-to-br from-primary to-secondary"></div>
+        {% endif %}
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+    </div>
+    
+    <!-- Content -->
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 text-white">
+        <div class="flex items-center gap-3 mb-4">
+            {% if project.category %}
+            <span class="px-4 py-1 rounded-full bg-white/20 backdrop-blur-sm text-sm font-medium">
+                {{ project.category.name }}
+            </span>
+            {% endif %}
+            {% if project.is_urgent %}
+            <span class="px-4 py-1 rounded-full bg-red-500 text-sm font-medium animate-pulse">
+                {% trans "Urgent" %}
+            </span>
+            {% endif %}
+        </div>
+        
+        <h1 class="font-display text-4xl md:text-5xl font-bold mb-4">{{ project.title }}</h1>
+        
+        <div class="flex items-center gap-4 text-white/80">
+            <span class="flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                </svg>
+                {{ project.location }}
+            </span>
+            <span class="flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                {{ project.total_donors }} {% trans "donateurs" %}
+            </span>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-16 bg-background">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-3 gap-12">
+            <!-- Left Column: Project Info -->
+            <div class="lg:col-span-2 space-y-12">
+                <!-- Description -->
+                <div class="bg-white rounded-3xl p-8 shadow-lg">
+                    <h2 class="font-display text-2xl font-bold text-gray-900 mb-6">{% trans "À propos du projet" %}</h2>
+                    <div class="prose prose-lg max-w-none text-gray-600">
+                        {{ project.description|linebreaks }}
+                    </div>
+                </div>
+                
+                <!-- Impact -->
+                {% if project.impact_description %}
+                <div class="bg-gradient-to-br from-secondary/5 to-primary/5 rounded-3xl p-8">
+                    <h2 class="font-display text-2xl font-bold text-gray-900 mb-6">{% trans "Impact attendu" %}</h2>
+                    <div class="prose prose-lg max-w-none text-gray-600">
+                        {{ project.impact_description|linebreaks }}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Project Needs -->
+                {% if needs %}
+                <div class="bg-white rounded-3xl p-8 shadow-lg">
+                    <h2 class="font-display text-2xl font-bold text-gray-900 mb-6">{% trans "Besoins du projet" %}</h2>
+                    
+                    <div class="space-y-6">
+                        {% for need in needs %}
+                        <div class="border-l-4 border-primary pl-6 py-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-semibold text-gray-900">{{ need.title }}</h3>
+                                <span class="px-3 py-1 rounded-full text-xs font-medium 
+                                      {% if need.need_type == 'financial' %}bg-green-100 text-green-700{% else %}bg-blue-100 text-blue-700{% endif %}">
+                                    {% if need.need_type == 'financial' %}{% trans "Financier" %}{% else %}{% trans "Matériel" %}{% endif %}
+                                </span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-3">{{ need.description }}</p>
+                            
+                            {% if need.need_type == 'financial' %}
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="font-semibold text-primary">{{ need.current_amount|floatformat:0 }} €</span>
+                                <span class="text-gray-500">{% trans "sur" %} {{ need.target_amount|floatformat:0 }} €</span>
+                            </div>
+                            <div class="progress-bar h-2">
+                                <div class="progress-bar-fill" style="width: {{ need.progress_percentage }}%"></div>
+                            </div>
+                            {% else %}
+                            <div class="text-sm text-gray-600">
+                                <span class="font-semibold">{{ need.quantity_received }}</span> / {{ need.quantity_needed }} {{ need.unit }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Timeline / Updates -->
+                {% if updates %}
+                <div class="bg-white rounded-3xl p-8 shadow-lg">
+                    <h2 class="font-display text-2xl font-bold text-gray-900 mb-6">{% trans "Dernières mises à jour" %}</h2>
+                    
+                    <div class="relative">
+                        <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+                        
+                        <div class="space-y-8">
+                            {% for update in updates %}
+                            <div class="relative pl-12">
+                                <div class="absolute left-0 w-8 h-8 rounded-full 
+                                      {% if update.is_milestone %}bg-accent{% else %}bg-primary/20{% endif %} 
+                                      flex items-center justify-center">
+                                    {% if update.is_milestone %}
+                                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    {% else %}
+                                    <div class="w-2 h-2 rounded-full bg-primary"></div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div>
+                                    <span class="text-sm text-gray-500">{{ update.created_at|date:"d F Y" }}</span>
+                                    <h3 class="font-semibold text-gray-900 mt-1">{{ update.title }}</h3>
+                                    <p class="text-gray-600 mt-2">{{ update.content|truncatewords:50 }}</p>
+                                    
+                                    {% if update.image %}
+                                    <img src="{{ update.image.url }}" alt="{{ update.title }}" 
+                                         class="mt-4 rounded-xl max-h-48 object-cover">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Right Column: Donation Card -->
+            <div class="lg:col-span-1">
+                <div class="sticky top-24 space-y-6">
+                    <!-- Progress Card -->
+                    <div class="bg-white rounded-3xl p-8 shadow-xl">
+                        <div class="mb-6">
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-3xl font-bold text-primary">{{ project.current_amount|floatformat:0 }} €</span>
+                                <span class="text-gray-500">{% trans "collectés" %}</span>
+                            </div>
+                            <div class="text-sm text-gray-500 mb-4">
+                                {% trans "Objectif" %}: {{ project.goal_amount|floatformat:0 }} €
+                            </div>
+                            
+                            <div class="progress-bar h-3 mb-2">
+                                <div class="progress-bar-fill" style="width: {{ project.progress_percentage }}%"></div>
+                            </div>
+                            
+                            <div class="flex justify-between text-sm">
+                                <span class="text-primary font-semibold">{{ project.progress_percentage|floatformat:0 }}%</span>
+                                <span class="text-gray-500">{{ project.total_donors }} {% trans "donateurs" %}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Donation Buttons -->
+                        <div class="space-y-3">
+                            <a href="{% url 'donations:donate_to_project' project.slug %}" 
+                               class="block w-full bg-primary hover:bg-primary-dark text-white text-center py-4 rounded-xl font-semibold transition-all hover:shadow-lg">
+                                {% trans "Faire un don" %}
+                            </a>
+                            
+                            <a href="{% url 'donations:material_contribution' %}?project={{ project.pk }}" 
+                               class="block w-full border-2 border-primary text-primary hover:bg-primary hover:text-white text-center py-4 rounded-xl font-semibold transition-colors">
+                                {% trans "Contribuer en matériel" %}
+                            </a>
+                        </div>
+                        
+                        <!-- Share -->
+                        <div class="mt-6 pt-6 border-t">
+                            <p class="text-sm text-gray-500 mb-3">{% trans "Partager ce projet" %}</p>
+                            <div class="flex gap-3">
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
+                                   target="_blank" 
+                                   class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                    </svg>
+                                </a>
+                                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ project.title }}" 
+                                   target="_blank"
+                                   class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:bg-gray-800">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                    </svg>
+                                </a>
+                                <a href="https://wa.me/?text={{ project.title }}%20{{ request.build_absolute_uri }}" 
+                                   target="_blank"
+                                   class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center hover:bg-green-600">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Related Articles -->
+{% if articles %}
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="font-display text-2xl font-bold text-gray-900 mb-8">{% trans "Articles liés" %}</h2>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+            {% for article in articles %}
+            <a href="{{ article.get_absolute_url }}" class="group">
+                <div class="bg-gray-100 rounded-2xl overflow-hidden mb-4">
+                    {% if article.featured_image %}
+                    <img src="{{ article.featured_image.url }}" alt="{{ article.title }}" 
+                         class="w-full h-48 object-cover group-hover:scale-105 transition-transform">
+                    {% endif %}
+                </div>
+                <h3 class="font-semibold text-gray-900 group-hover:text-primary">{{ article.title }}</h3>
+                <p class="text-sm text-gray-500 mt-1">{{ article.published_date|date:"d F Y" }}</p>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Related Projects -->
+{% if related_projects %}
+<section class="py-16 bg-background">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="font-display text-2xl font-bold text-gray-900 mb-8">{% trans "Projets similaires" %}</h2>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+            {% for related in related_projects %}
+            <a href="{{ related.get_absolute_url }}" class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                <div class="h-40 overflow-hidden">
+                    {% if related.featured_image %}
+                    <img src="{{ related.featured_image.url }}" alt="{{ related.title }}" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                    {% endif %}
+                </div>
+                <div class="p-6">
+                    <h3 class="font-semibold text-gray-900 group-hover:text-primary">{{ related.title }}</h3>
+                    <p class="text-sm text-gray-500 mt-1 line-clamp-2">{{ related.short_description }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
