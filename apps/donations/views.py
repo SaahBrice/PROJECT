@@ -16,10 +16,21 @@ from apps.projects.models import Project, ProjectNeed
 
 def donate(request):
     """General donation page"""
+    from apps.core.models import FAQ
+    
+    # Get material needs for in-kind donation form
+    material_needs = ProjectNeed.objects.filter(
+        need_type='material',
+        is_fulfilled=False
+    ).select_related('project')
+    
     context = {
         'projects': Project.objects.filter(status='active'),
         'impact_examples': DonationImpact.objects.all()[:6],
+        'featured_impacts': DonationImpact.objects.filter(is_featured=True)[:3],
         'stripe_public_key': settings.STRIPE_PUBLIC_KEY,
+        'faqs': FAQ.objects.filter(is_active=True)[:10],
+        'material_needs': material_needs,
     }
     return render(request, 'donations/donate.html', context)
 

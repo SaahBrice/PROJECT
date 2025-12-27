@@ -212,6 +212,14 @@ class DonationImpact(models.Model):
     description = models.TextField(_("Description de l'impact"))
     icon = models.CharField(_("Icône"), max_length=50, blank=True)
     
+    # Visual story fields
+    image = models.ImageField(_("Image"), upload_to='donations/impact/', blank=True, null=True,
+                              help_text=_("Photo illustrant l'impact (ex: bénéficiaire)"))
+    short_story = models.CharField(_("Courte histoire"), max_length=200, blank=True,
+                                   help_text=_("Ex: Marie a reçu ses fournitures scolaires grâce aux donateurs"))
+    is_featured = models.BooleanField(_("Mis en avant"), default=False,
+                                      help_text=_("Afficher en priorité sur la page de dons"))
+    
     # Optional: link to specific project category
     project_category = models.ForeignKey(
         'projects.ProjectCategory',
@@ -230,3 +238,4 @@ class DonationImpact(models.Model):
     
     def __str__(self):
         return f"{self.amount} {self.currency} - {self.description[:50]}"
+
