@@ -447,14 +447,44 @@
         </div>
         
         <!-- Newsletter -->
-        <div class="bg-white rounded-2xl p-8 shadow-sm max-w-xl mx-auto" data-animate>
+        <div class="bg-white rounded-2xl p-8 shadow-sm max-w-xl mx-auto" data-animate 
+             x-data="{ submitted: false, message: '', isSuccess: false }"
+             data-success-msg="{% trans 'Merci ! Vous êtes maintenant inscrit à notre newsletter.' %}"
+             data-error-msg="{% trans 'Une erreur est survenue. Veuillez réessayer.' %}">
             <p class="text-sm text-gray-500 mb-3 text-center">{% trans "Ne manquez aucune nouvelle" %}</p>
-            <form action="{% url 'core:newsletter_subscribe' %}" method="post" class="flex gap-2">
-                {% csrf_token %}
+            
+            <!-- Form -->
+            <form x-show="!submitted" 
+                  x-ref="newsletterForm"
+                  @submit.prevent="
+                      fetch('{% url 'core:newsletter_subscribe' %}', {
+                          method: 'POST',
+                          headers: {'X-CSRFToken': '{{ csrf_token }}', 'Content-Type': 'application/x-www-form-urlencoded'},
+                          body: new URLSearchParams(new FormData($refs.newsletterForm))
+                      }).then(() => {
+                          submitted = true;
+                          isSuccess = true;
+                          message = $el.closest('[data-success-msg]').dataset.successMsg;
+                      }).catch(() => {
+                          submitted = true;
+                          isSuccess = false;
+                          message = $el.closest('[data-error-msg]').dataset.errorMsg;
+                      });
+                  " class="flex gap-2">
                 <input type="email" name="email" placeholder="{% trans 'Votre email' %}" required 
                        class="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none">
                 <button type="submit" class="btn btn-primary">{% trans "S'inscrire" %}</button>
             </form>
+            
+            <!-- Success/Error Message -->
+            <div x-show="submitted" x-transition class="text-center py-2">
+                <div :class="isSuccess ? 'text-green-600' : 'text-red-600'" class="flex items-center justify-center gap-2">
+                    <svg x-show="isSuccess" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span x-text="message" class="font-medium"></span>
+                </div>
+            </div>
         </div>
     </div>
 </section>

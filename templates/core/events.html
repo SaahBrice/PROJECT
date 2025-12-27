@@ -125,10 +125,10 @@
                 <!-- Content -->
                 <div class="p-8 lg:p-12 text-white">
                     <p class="text-primary-light text-sm font-semibold mb-3">{{ next_event.event_date|date:"l d F Y" }}</p>
-                    <h3 class="font-display text-2xl lg:text-3xl font-bold mb-4">{{ next_event.title }}</h3>
-                    <p class="text-gray-400 mb-6">{{ next_event.short_description|default:next_event.description|truncatewords:30 }}</p>
+                    <h3 class="font-display text-3xl lg:text-4xl font-bold mb-4 text-white drop-shadow-lg">{{ next_event.title }}</h3>
+                    <p class="text-gray-300 mb-6">{{ next_event.short_description|default:next_event.description|truncatewords:30 }}</p>
                     
-                    <div class="flex items-center gap-2 text-gray-400 mb-8">
+                    <div class="flex items-center gap-2 text-gray-300 mb-8">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                         </svg>
@@ -158,7 +158,91 @@
                         </div>
                     </div>
                     
-                    <a href="{% url 'core:contact' %}" class="btn btn-primary">{% trans "S'inscrire" %}</a>
+                    <!-- Action Buttons -->
+                    <div class="flex flex-wrap gap-3 mb-6">
+                        <a href="{% url 'core:contact' %}" class="btn btn-primary">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            {% trans "Nous contacter" %}
+                        </a>
+                    </div>
+                    
+                    <!-- Share Buttons -->
+                    <div class="pt-4 border-t border-white/10 mb-6">
+                        <p class="text-sm text-gray-400 mb-3">{% trans "Partager cet événement" %}</p>
+                        <div class="flex gap-2">
+                            <!-- WhatsApp -->
+                            <a href="https://wa.me/?text={{ next_event.title|urlencode }}%20-%20{{ request.build_absolute_uri|urlencode }}" 
+                               target="_blank"
+                               class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center hover:bg-green-600 transition-colors"
+                               title="{% trans 'Partager sur WhatsApp' %}">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                                </svg>
+                            </a>
+                            <!-- Facebook -->
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" 
+                               target="_blank"
+                               class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition-colors"
+                               title="{% trans 'Partager sur Facebook' %}">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                </svg>
+                            </a>
+                            <!-- Email -->
+                            <a href="mailto:?subject={{ next_event.title|urlencode }}&body={{ next_event.short_description|default:next_event.description|truncatewords:20|urlencode }}%0A%0A{{ request.build_absolute_uri|urlencode }}" 
+                               class="w-10 h-10 rounded-full bg-gray-600 text-white flex items-center justify-center hover:bg-gray-700 transition-colors"
+                               title="{% trans 'Partager par email' %}">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </a>
+                            <!-- Copy Link -->
+                            <button onclick="navigator.clipboard.writeText(window.location.href).then(() => this.classList.add('bg-green-500'))"
+                                    class="w-10 h-10 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors"
+                                    title="{% trans 'Copier le lien' %}">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Newsletter Inside Card -->
+                    <div class="pt-4 border-t border-white/10"
+                         x-data="{ submitted: false, message: '', isSuccess: false }"
+                         data-success-msg="{% trans 'Merci ! Vous recevrez nos actualités.' %}"
+                         data-error-msg="{% trans 'Une erreur est survenue.' %}">
+                        <p class="text-sm text-gray-400 mb-3">{% trans "Restez informé de nos événements" %}</p>
+                        <form x-show="!submitted" 
+                              x-ref="eventNewsletterForm"
+                              @submit.prevent="
+                                  fetch('{% url 'core:newsletter_subscribe' %}', {
+                                      method: 'POST',
+                                      headers: {'X-CSRFToken': '{{ csrf_token }}', 'Content-Type': 'application/x-www-form-urlencoded'},
+                                      body: new URLSearchParams(new FormData($refs.eventNewsletterForm))
+                                  }).then(() => {
+                                      submitted = true;
+                                      isSuccess = true;
+                                      message = $el.closest('[data-success-msg]').dataset.successMsg;
+                                  }).catch(() => {
+                                      submitted = true;
+                                      isSuccess = false;
+                                      message = $el.closest('[data-error-msg]').dataset.errorMsg;
+                                  });
+                              " 
+                              class="flex gap-2">
+                            <input type="email" name="email" placeholder="{% trans 'Votre email' %}" required 
+                                   class="flex-1 px-4 py-2 rounded-lg text-charcoal text-sm focus:ring-2 focus:ring-primary outline-none">
+                            <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-primary-dark transition-colors">
+                                {% trans "S'abonner" %}
+                            </button>
+                        </form>
+                        <div x-show="submitted" x-transition class="py-2">
+                            <span :class="isSuccess ? 'text-green-400' : 'text-red-400'" x-text="message" class="text-sm font-medium"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -248,15 +332,46 @@
 
 <!-- Newsletter CTA -->
 <section class="py-16 bg-primary text-white">
-    <div class="max-w-2xl mx-auto px-4 text-center">
+    <div class="max-w-2xl mx-auto px-4 text-center"
+         x-data="{ submitted: false, message: '', isSuccess: false }"
+         data-success-msg="{% trans 'Merci ! Vous êtes maintenant inscrit à notre newsletter.' %}"
+         data-error-msg="{% trans 'Une erreur est survenue. Veuillez réessayer.' %}">
         <h2 class="font-display text-2xl font-bold mb-4">{% trans "Ne manquez aucun événement" %}</h2>
-        <p class="text-white/80 mb-8">{% trans "Inscrivez-vous pour recevoir nos invitations en avant-première." %}</p>
-        <form action="{% url 'core:newsletter_subscribe' %}" method="post" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            {% csrf_token %}
+        <p class="text-white/80 mb-8">{% trans "Inscrivez-vous pour recevoir nos informations en avant-première." %}</p>
+        
+        <!-- Form -->
+        <form x-show="!submitted" 
+              x-ref="newsletterForm"
+              @submit.prevent="
+                  fetch('{% url 'core:newsletter_subscribe' %}', {
+                      method: 'POST',
+                      headers: {'X-CSRFToken': '{{ csrf_token }}', 'Content-Type': 'application/x-www-form-urlencoded'},
+                      body: new URLSearchParams(new FormData($refs.newsletterForm))
+                  }).then(() => {
+                      submitted = true;
+                      isSuccess = true;
+                      message = $el.closest('[data-success-msg]').dataset.successMsg;
+                  }).catch(() => {
+                      submitted = true;
+                      isSuccess = false;
+                      message = $el.closest('[data-error-msg]').dataset.errorMsg;
+                  });
+              " 
+              class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <input type="email" name="email" placeholder="{% trans 'Votre email' %}" required 
                    class="flex-1 px-5 py-3 rounded-xl text-charcoal focus:ring-2 focus:ring-white/50 outline-none">
             <button type="submit" class="btn bg-white text-primary hover:bg-gray-100">{% trans "S'inscrire" %}</button>
         </form>
+        
+        <!-- Success/Error Message -->
+        <div x-show="submitted" x-transition class="py-4">
+            <div :class="isSuccess ? 'text-white' : 'text-red-200'" class="flex items-center justify-center gap-2">
+                <svg x-show="isSuccess" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                <span x-text="message" class="font-medium text-lg"></span>
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}
