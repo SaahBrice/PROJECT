@@ -470,10 +470,10 @@
                           isSuccess = false;
                           message = $el.closest('[data-error-msg]').dataset.errorMsg;
                       });
-                  " class="flex gap-2">
+                  " class="flex flex-col sm:flex-row gap-2">
                 <input type="email" name="email" placeholder="{% trans 'Votre email' %}" required 
-                       class="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none">
-                <button type="submit" class="btn btn-primary">{% trans "S'inscrire" %}</button>
+                       class="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none min-w-0">
+                <button type="submit" class="btn btn-primary whitespace-nowrap">{% trans "S'inscrire" %}</button>
             </form>
             
             <!-- Success/Error Message -->
