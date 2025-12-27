@@ -101,7 +101,7 @@
                                 <span class="text-gray-500">{% trans "sur" %} {{ need.target_amount|floatformat:0 }} €</span>
                             </div>
                             <div class="progress-bar h-2">
-                                <div class="progress-bar-fill" style="width: {{ need.progress_percentage }}%"></div>
+                                <div class="progress-bar-fill" style="width: {{ need.progress_percentage|floatformat:0 }}%"></div>
                             </div>
                             {% else %}
                             <div class="text-sm text-gray-600">
