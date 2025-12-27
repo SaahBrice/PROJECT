@@ -108,7 +108,7 @@
                             <span class="text-gray-400">{{ project.progress_percentage|floatformat:0 }}%</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-bar-fill" style="width: {{ project.progress_percentage }}%"></div>
+                            <div class="progress-bar-fill" style="width: {{ project.progress_percentage|floatformat:0 }}%"></div>
                         </div>
                         <div class="flex justify-between text-xs text-gray-400 mt-2">
                             <span>{% trans "Objectif" %}: {{ project.goal_amount|floatformat:0 }} €</span>

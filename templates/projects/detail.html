@@ -298,7 +298,7 @@
                             <span class="text-gray-400">{{ related.current_amount|floatformat:0 }}€</span>
                         </div>
                         <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-primary rounded-full" style="width: {{ related.progress_percentage }}%"></div>
+                            <div class="h-full bg-primary rounded-full" style="width: {{ related.progress_percentage|floatformat:0 }}%"></div>
                         </div>
                     </div>
                     
