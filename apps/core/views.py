@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-from .models import SiteSettings, TeamMember, Testimonial, Partner, ImpactStat, FAQ, ContactMessage, Newsletter, Event
+from .models import SiteSettings, TeamMember, Testimonial, Partner, ImpactStat, FAQ, ContactMessage, Newsletter, Event, HomeChapter
 from apps.projects.models import Project
 from apps.articles.models import Article
 
@@ -32,6 +32,7 @@ def home(request):
             is_published=True,
             event_date__gt=timezone.now()
         )[:3],
+        'home_chapters': HomeChapter.objects.filter(is_published=True),
     }
     return render(request, 'core/home.html', context)
 
@@ -124,4 +125,31 @@ def events_list(request):
         'past_events': past_events,
     }
     return render(request, 'core/events.html', context)
+
+
+def gallery(request):
+    """Gallery page with masonry layout"""
+    from .models import GalleryImage
+    
+    # Get filter by project if specified
+    project_slug = request.GET.get('project')
+    
+    images = GalleryImage.objects.filter(is_published=True)
+    
+    if project_slug:
+        images = images.filter(project__slug=project_slug)
+    
+    # Get projects that have gallery images for filtering
+    projects_with_images = Project.objects.filter(
+        project_gallery_images__is_published=True
+    ).distinct()
+    
+    context = {
+        'images': images,
+        'projects': projects_with_images,
+        'current_project': project_slug,
+        'total_images': GalleryImage.objects.filter(is_published=True).count(),
+    }
+    return render(request, 'core/gallery.html', context)
+
 

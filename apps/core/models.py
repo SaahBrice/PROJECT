@@ -312,3 +312,138 @@ class Event(models.Model):
             delta = self.event_date - timezone.now()
             return delta.days
         return 0
+
+
+class GalleryImage(models.Model):
+    """Gallery images for showcasing impact and community"""
+    
+    # Basic info
+    title = models.CharField(_("Titre"), max_length=200, blank=True)
+    caption = models.TextField(_("Légende"), blank=True)
+    
+    # Image - support both upload and URL
+    image = models.ImageField(_("Image"), upload_to='gallery/', blank=True)
+    image_url = models.URLField(_("URL de l'image"), blank=True,
+                                help_text=_("Utilisez ceci pour les images externes"))
+    
+    # Association with project
+    project = models.ForeignKey(
+        'projects.Project',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='project_gallery_images',
+        verbose_name=_("Projet associé")
+    )
+    
+    # Metadata
+    location = models.CharField(_("Lieu"), max_length=200, blank=True)
+    date_taken = models.DateField(_("Date de prise"), null=True, blank=True)
+    photographer = models.CharField(_("Photographe"), max_length=100, blank=True)
+    
+    # Display options
+    is_featured = models.BooleanField(_("Mise en avant"), default=False)
+    is_published = models.BooleanField(_("Publié"), default=True)
+    order = models.PositiveIntegerField(_("Ordre"), default=0)
+    
+    # Timestamps
+    created_at = models.DateTimeField(_("Créé le"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("Modifié le"), auto_now=True)
+    
+    class Meta:
+        verbose_name = _("Image de galerie")
+        verbose_name_plural = _("Images de galerie")
+        ordering = ['-is_featured', '-created_at']
+    
+    def __str__(self):
+        if self.title:
+            return self.title
+        elif self.project:
+            return f"Image - {self.project.title}"
+        return f"Gallery Image {self.pk}"
+    
+    @property
+    def get_image_url(self):
+        """Return image URL from upload or external URL"""
+        if self.image:
+            return self.image.url
+        return self.image_url
+
+
+class HomeChapter(models.Model):
+    """
+    Dynamic chapters for the homepage storytelling experience.
+    Displayed in a horizontal scroll carousel.
+    """
+    
+    class ChapterType(models.TextChoices):
+        STORY = 'story', _('Histoire / Récit')
+        IMPACT = 'impact', _('Chiffres d\'impact')
+        TESTIMONIAL = 'testimonial', _('Témoignage')
+        TIMELINE = 'timeline', _('Chronologie')
+        HIGHLIGHT = 'highlight', _('Mise en avant')
+    
+    # Basic info
+    chapter_number = models.PositiveIntegerField(_("Numéro de chapitre"), default=1)
+    title = models.CharField(_("Titre"), max_length=200)
+    subtitle = models.CharField(_("Sous-titre"), max_length=300, blank=True)
+    content = models.TextField(_("Contenu"), blank=True,
+                               help_text=_("Texte principal du chapitre"))
+    
+    # Type and styling
+    chapter_type = models.CharField(_("Type de chapitre"), max_length=20,
+                                    choices=ChapterType.choices, default=ChapterType.STORY)
+    accent_color = models.CharField(_("Couleur d'accent"), max_length=7, default="#0066FF",
+                                    help_text=_("Couleur hexadécimale, ex: #0066FF"))
+    dark_background = models.BooleanField(_("Fond sombre"), default=False)
+    
+    # Media - Multiple options (upload, URL, or select from gallery)
+    background_image = models.ImageField(_("Image de fond (upload)"), 
+                                         upload_to='chapters/', blank=True)
+    background_image_url = models.URLField(_("Image de fond (URL)"), blank=True)
+    gallery_image = models.ForeignKey(
+        'GalleryImage',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='chapter_backgrounds',
+        verbose_name=_("Image de galerie")
+    )
+    
+    # Call to action
+    cta_text = models.CharField(_("Texte du bouton"), max_length=50, blank=True)
+    cta_url = models.CharField(_("Lien du bouton"), max_length=200, blank=True,
+                               help_text=_("URL ou nom de vue Django, ex: core:about"))
+    
+    # Stats for impact chapters (JSON)
+    stats = models.JSONField(_("Statistiques"), default=list, blank=True,
+                            help_text=_('Ex: [{"value": "520+", "label": "Familles aidées"}]'))
+    
+    # Display options
+    order = models.PositiveIntegerField(_("Ordre"), default=0)
+    is_published = models.BooleanField(_("Publié"), default=True)
+    
+    # Timestamps
+    created_at = models.DateTimeField(_("Créé le"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("Modifié le"), auto_now=True)
+    
+    class Meta:
+        verbose_name = _("Chapitre d'accueil")
+        verbose_name_plural = _("Chapitres d'accueil")
+        ordering = ['order', 'chapter_number']
+    
+    def __str__(self):
+        return f"Chapitre {self.chapter_number}: {self.title}"
+    
+    @property
+    def get_background_url(self):
+        """Return background image URL from any source"""
+        if self.background_image:
+            return self.background_image.url
+        elif self.background_image_url:
+            return self.background_image_url
+        elif self.gallery_image:
+            return self.gallery_image.get_image_url
+        return None
+
+

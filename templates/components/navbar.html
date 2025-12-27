@@ -26,11 +26,14 @@
                 <a href="{% url 'articles:list' %}" class="nav-link">
                     {% trans "Récits" %}
                 </a>
+                <a href="{% url 'core:gallery' %}" class="nav-link">
+                    {% trans "Galerie" %}
+                </a>
+                <a href="{% url 'core:events' %}" class="nav-link">
+                    {% trans "Événements" %}
+                </a>
                 <a href="{% url 'core:about' %}" class="nav-link">
                     {% trans "L'Équipe" %}
-                </a>
-                <a href="{% url 'core:contact' %}" class="nav-link">
-                    {% trans "Contact" %}
                 </a>
             </div>
             
@@ -87,11 +90,14 @@
             <a href="{% url 'articles:list' %}" class="block text-charcoal hover:text-primary hover:bg-gray-50 font-medium py-3 px-4 rounded-xl">
                 {% trans "Récits" %}
             </a>
+            <a href="{% url 'core:gallery' %}" class="block text-charcoal hover:text-primary hover:bg-gray-50 font-medium py-3 px-4 rounded-xl">
+                {% trans "Galerie" %}
+            </a>
+            <a href="{% url 'core:events' %}" class="block text-charcoal hover:text-primary hover:bg-gray-50 font-medium py-3 px-4 rounded-xl">
+                {% trans "Événements" %}
+            </a>
             <a href="{% url 'core:about' %}" class="block text-charcoal hover:text-primary hover:bg-gray-50 font-medium py-3 px-4 rounded-xl">
                 {% trans "L'Équipe" %}
-            </a>
-            <a href="{% url 'core:contact' %}" class="block text-charcoal hover:text-primary hover:bg-gray-50 font-medium py-3 px-4 rounded-xl">
-                {% trans "Contact" %}
             </a>
             
             <!-- Mobile Language Switcher -->

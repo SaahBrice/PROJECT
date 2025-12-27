@@ -47,11 +47,17 @@ def project_detail(request, slug):
         status__in=['active', 'funded', 'completed']
     )
     
-    # Get related projects (same category)
+    # Get related projects (same category first, then other active projects)
     related_projects = Project.objects.filter(
         category=project.category,
         status='active'
     ).exclude(pk=project.pk)[:3]
+    
+    # If no same-category projects, show other active projects
+    if not related_projects.exists():
+        related_projects = Project.objects.filter(
+            status='active'
+        ).exclude(pk=project.pk)[:3]
     
     context = {
         'project': project,
