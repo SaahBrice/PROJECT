@@ -1,5 +1,5 @@
 """
-Script to populate homepage chapters with narrative style content
+Script to populate homepage chapters with realistic, solution-focused stories
 Run with: python populate_chapters.py
 """
 
@@ -15,64 +15,64 @@ from apps.core.models import HomeChapter
 print("Clearing existing chapters...")
 HomeChapter.objects.all().delete()
 
-# Create realistic chapters matching the existing beautiful narrative style
+# Realistic, solution-focused stories - FDTM creates lasting solutions, not just handouts
 chapters_data = [
     {
         "chapter_number": 1,
-        "title": "« Avant, je marchais 12 km pour voir un médecin. »",
-        "subtitle": "Maman Rose, 67 ans, guérisseuse traditionnelle à Foto",
-        "content": """Quand le centre de santé a ouvert ses portes, elle a pleuré. Pas de tristesse — de soulagement.
+        "title": "« Maintenant, c'est moi qui aide les autres mamans. »",
+        "subtitle": "Jeanne, 45 ans, relais communautaire à Bafoussam",
+        "content": """Jeanne a perdu son premier enfant à cause d'une fièvre mal traitée. Personne dans son village ne savait reconnaître les signes de danger.
 
-Aujourd'hui, elle travaille main dans la main avec les infirmières. Son savoir ancestral rencontre la médecine moderne. Ses petits-enfants sont vaccinés.""",
+Avec le soutien de FDTM, elle a suivi une formation de relais communautaire. Aujourd'hui, elle sensibilise les familles de son quartier aux premiers gestes de santé. Elle a déjà orienté 12 enfants vers le dispensaire à temps.""",
         "chapter_type": "story",
         "background_image_url": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800",
         "dark_background": False,
         "accent_color": "#0066FF",
-        "stats": [{"value": "3 200", "label": "consultations en 2024"}],
+        "stats": [{"value": "45", "label": "relais formés"}],
         "order": 1,
     },
     {
         "chapter_number": 2,
-        "title": "« Je serai médecin. Comme ceux qui ont soigné ma mère. »",
-        "subtitle": "Arouna M., boursier depuis 2022",
-        "content": """Arouna, 16 ans. Son père est cultivateur. Sa mère a survécu à une complication pendant l'accouchement grâce au centre de santé. Depuis, il a une mission.
+        "title": "« L'école, c'est mon investissement pour demain. »",
+        "subtitle": "Arouna, 17 ans, boursier en classe de Terminale",
+        "content": """Le père d'Arouna cultive le maïs. Les bonnes années, ça suffit. Les mauvaises, il faut choisir entre manger et payer l'école.
 
-Grâce à une bourse FDTM, il est premier de sa classe au lycée de Dschang. Dans 7 ans, il rentrera au village. Avec une blouse blanche.""",
+Avec une bourse FDTM, Arouna ne dépend plus des récoltes. Il prépare son baccalauréat et veut devenir comptable pour aider les agriculteurs de son village à mieux gérer leurs revenus.""",
         "chapter_type": "story",
         "background_image_url": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800",
         "dark_background": False,
         "accent_color": "#0066FF",
-        "stats": [{"value": "127", "label": "boursiers cette année"}],
+        "stats": [{"value": "38", "label": "boursiers cette année"}],
         "order": 2,
     },
     {
         "chapter_number": 3,
-        "title": "« Mes enfants ont mangé à leur faim cette année. »",
-        "subtitle": "Marie-Claire, mère de 4 enfants à Douala",
-        "content": """Marie-Claire a perdu son mari en 2021. Avec 4 enfants à nourrir et pas de travail stable, chaque jour était un combat.
+        "title": "« Mon commerce nourrit ma famille et fait vivre deux autres personnes. »",
+        "subtitle": "Marie-Claire, 34 ans, commerçante à Douala",
+        "content": """Marie-Claire a perdu son mari il y a 3 ans. Avec 4 enfants à charge, elle vendait des beignets au bord de la route.
 
-Grâce à l'aide alimentaire et au soutien financier de FDTM, elle a pu ouvrir un petit commerce de légumes. Aujourd'hui, elle emploie deux personnes.""",
+FDTM lui a fourni un fonds de démarrage et une formation en gestion. Aujourd'hui, elle a un stand au marché central, emploie deux vendeuses, et ses enfants sont tous scolarisés.""",
         "chapter_type": "story",
         "background_image_url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=800",
         "dark_background": False,
         "accent_color": "#00C49A",
-        "stats": [{"value": "520+", "label": "familles soutenues"}],
-        "cta_text": "Soutenir une famille",
+        "stats": [{"value": "28", "label": "micro-entreprises créées"}],
+        "cta_text": "Soutenir un projet",
         "cta_url": "donations:donate",
         "order": 3,
     },
     {
         "chapter_number": 4,
-        "title": "« La rentrée scolaire n'est plus un cauchemar. »",
-        "subtitle": "Jean-Pierre, père de 3 enfants",
-        "content": """Chaque année, Jean-Pierre devait choisir : payer les frais scolaires ou acheter les fournitures. Jamais les deux.
+        "title": "« Mes enfants ont les mêmes chances que les autres. »",
+        "subtitle": "Emmanuel, 42 ans, père de 3 enfants à Yaoundé",
+        "content": """Emmanuel est gardien de nuit. Son salaire couvre le loyer et la nourriture. Pour les frais scolaires, c'était toujours l'angoisse de septembre.
 
-Avec les kits scolaires distribués par FDTM — cahiers, stylos, uniformes — ses trois enfants sont équipés. Et lui peut garder son salaire pour la nourriture.""",
+Grâce au programme de parrainage FDTM, ses trois enfants reçoivent chaque année leur kit scolaire complet. Emmanuel peut maintenant épargner pour leur avenir au lieu de s'endetter chaque rentrée.""",
         "chapter_type": "story",
         "background_image_url": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800",
         "dark_background": False,
         "accent_color": "#FF6B35",
-        "stats": [{"value": "150+", "label": "kits scolaires distribués"}],
+        "stats": [{"value": "85", "label": "familles parrainées"}],
         "order": 4,
     },
 ]
@@ -80,6 +80,6 @@ Avec les kits scolaires distribués par FDTM — cahiers, stylos, uniformes — 
 print("Creating homepage chapters...")
 for data in chapters_data:
     HomeChapter.objects.create(**data, is_published=True)
-    print(f"  Created: Chapitre {data['chapter_number']} - {data['title'][:50]}...")
+    print(f"  Created: Chapitre {data['chapter_number']} - {data['title'][:40]}...")
 
 print(f"\nDone! Created {HomeChapter.objects.count()} chapters.")

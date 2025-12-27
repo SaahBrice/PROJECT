@@ -170,7 +170,7 @@
                             </div>
                             
                             <div class="progress-bar h-3 mb-2">
-                                <div class="progress-bar-fill" style="width: {{ project.progress_percentage }}%"></div>
+                                <div class="progress-bar-fill" style="width: {{ project.progress_percentage|floatformat:0 }}%"></div>
                             </div>
                             
                             <div class="flex justify-between text-sm">

@@ -206,10 +206,10 @@
                     <div class="text-center">
                         <div class="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-3">
                             <svg class="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                             </svg>
                         </div>
-                        <p class="font-semibold text-charcoal text-sm">{% trans "Proximité" %}</p>
+                        <p class="font-semibold text-charcoal text-sm">{% trans "Durabilité" %}</p>
                     </div>
                 </div>
                 
@@ -282,7 +282,7 @@
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6" data-animate>
             <div>
                 <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-2">{% trans "En ce moment" %}</p>
-                <h2 class="font-display text-3xl sm:text-4xl font-bold text-charcoal">{% trans "Projets qui respirent" %}</h2>
+                <h2 class="font-display text-3xl sm:text-4xl font-bold text-charcoal">{% trans "Projets actifs" %}</h2>
             </div>
             <a href="{% url 'projects:list' %}" class="text-charcoal hover:text-primary font-medium flex items-center gap-2 group">
                 {% trans "Voir tous les projets" %}
@@ -337,11 +337,11 @@
                         <!-- Progress -->
                         <div class="mb-6">
                             <div class="flex justify-between mb-2 text-sm">
-                                <span class="font-bold text-charcoal">{{ project.current_amount|floatformat:0 }} € {% trans "collectés" %}</span>
-                                <span class="text-gray-500">{{ project.progress_percentage|floatformat:0 }}%</span>
+                                <span class="font-bold text-charcoal">{{ project.current_amount|floatformat:0 }} € <span class="font-normal text-gray-500">/ {{ project.goal_amount|floatformat:0 }} €</span></span>
+                                <span class="text-primary font-semibold">{{ project.progress_percentage|floatformat:0 }}%</span>
                             </div>
                             <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-                                <div class="h-full bg-primary rounded-full" style="width: {{ project.progress_percentage }}%"></div>
+                                <div class="h-full bg-primary rounded-full transition-all duration-500" style="width: {{ project.progress_percentage|floatformat:0 }}%"></div>
                             </div>
                         </div>
                         
