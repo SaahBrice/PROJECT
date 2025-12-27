@@ -32,45 +32,102 @@
 </section>
 
 <!-- ========== CHAPTER 1: A VOICE FROM THE VILLAGE ========== -->
-<section id="premiere-histoire" class="py-24 bg-white">
+<!-- ========== DYNAMIC CHAPTERS FROM DATABASE ========== -->
+{% for chapter in home_chapters %}
+<section id="chapitre-{{ chapter.chapter_number }}" class="py-24 {% cycle 'bg-white' 'bg-background' %}">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid lg:grid-cols-2 gap-16 items-center">
+            {% if forloop.counter|divisibleby:2 %}
+            <!-- Even chapters: Image first, Story second -->
+            <!-- Image -->
+            <div class="relative order-2 lg:order-1" data-animate>
+                <div class="aspect-[4/5] rounded-2xl overflow-hidden">
+                    {% if chapter.get_background_url %}
+                    <img src="{{ chapter.get_background_url }}" alt="{{ chapter.title }}" class="w-full h-full object-cover">
+                    {% else %}
+                    <div class="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20"></div>
+                    {% endif %}
+                </div>
+                {% if chapter.stats %}
+                <div class="absolute -bottom-6 -right-6 bg-charcoal text-white p-6 rounded-xl shadow-xl">
+                    <p class="text-3xl font-bold">{{ chapter.stats.0.value }}</p>
+                    <p class="text-sm opacity-80">{{ chapter.stats.0.label }}</p>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Story -->
+            <div class="order-1 lg:order-2" data-animate data-delay="200">
+                <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-4">
+                    {% trans "Chapitre" %} {{ chapter.chapter_number }}
+                </p>
+                <h2 class="font-display text-3xl sm:text-4xl font-bold text-charcoal mb-6 leading-tight">
+                    {{ chapter.title }}
+                </h2>
+                {% if chapter.subtitle %}
+                <p class="text-xl text-gray-500 mb-4 italic">{{ chapter.subtitle }}</p>
+                {% endif %}
+                <div class="prose prose-lg text-gray-600">
+                    {{ chapter.content|linebreaks }}
+                </div>
+                {% if chapter.cta_text %}
+                <div class="mt-8">
+                    <a href="{% if '://' in chapter.cta_url %}{{ chapter.cta_url }}{% else %}{% url chapter.cta_url %}{% endif %}" 
+                       class="btn btn-primary">
+                        {{ chapter.cta_text }}
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            {% else %}
+            <!-- Odd chapters: Story first, Image second -->
             <!-- Story -->
             <div data-animate>
-                <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{% trans "Une voix du village" %}</p>
+                <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-4">
+                    {% if forloop.first %}{% trans "Une voix du village" %}{% else %}{% trans "Chapitre" %} {{ chapter.chapter_number }}{% endif %}
+                </p>
                 <h2 class="font-display text-3xl sm:text-4xl font-bold text-charcoal mb-6 leading-tight">
-                    {% trans "« Avant, je marchais 12 km pour voir un médecin. »" %}
+                    {{ chapter.title }}
                 </h2>
+                {% if chapter.subtitle %}
+                <p class="text-xl text-gray-500 mb-4 italic">{{ chapter.subtitle }}</p>
+                {% endif %}
                 <div class="prose prose-lg text-gray-600">
-                    <p>{% trans "Maman Rose, 67 ans, guérisseuse traditionnelle à Foto. Quand le centre de santé a ouvert ses portes, elle a pleuré. Pas de tristesse — de soulagement." %}</p>
-                    <p>{% trans "Aujourd'hui, elle travaille main dans la main avec les infirmières. Son savoir ancestral rencontre la médecine moderne. Ses petits-enfants sont vaccinés." %}</p>
+                    {{ chapter.content|linebreaks }}
                 </div>
-                <div class="mt-8 flex items-center gap-4">
-                    <div class="w-14 h-14 rounded-full overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100" alt="Maman Rose" class="w-full h-full object-cover">
-                    </div>
-                    <div>
-                        <p class="font-semibold text-charcoal">Maman Rose</p>
-                        <p class="text-sm text-gray-500">Foto, {% trans "Région Ouest" %}</p>
-                    </div>
+                {% if chapter.cta_text %}
+                <div class="mt-8">
+                    <a href="{% if '://' in chapter.cta_url %}{{ chapter.cta_url }}{% else %}{% url chapter.cta_url %}{% endif %}" 
+                       class="btn btn-primary">
+                        {{ chapter.cta_text }}
+                    </a>
                 </div>
+                {% endif %}
             </div>
             
             <!-- Image -->
             <div class="relative" data-animate data-delay="200">
                 <div class="aspect-[4/5] rounded-2xl overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800" alt="Centre de santé" class="w-full h-full object-cover">
+                    {% if chapter.get_background_url %}
+                    <img src="{{ chapter.get_background_url }}" alt="{{ chapter.title }}" class="w-full h-full object-cover">
+                    {% else %}
+                    <div class="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20"></div>
+                    {% endif %}
                 </div>
+                {% if chapter.stats %}
                 <div class="absolute -bottom-6 -left-6 bg-primary text-white p-6 rounded-xl shadow-xl">
-                    <p class="text-3xl font-bold">3 200</p>
-                    <p class="text-sm opacity-80">{% trans "consultations en 2024" %}</p>
+                    <p class="text-3xl font-bold">{{ chapter.stats.0.value }}</p>
+                    <p class="text-sm opacity-80">{{ chapter.stats.0.label }}</p>
                 </div>
+                {% endif %}
             </div>
+            {% endif %}
         </div>
     </div>
 </section>
 
-<!-- ========== THE PATH: VISUAL JOURNEY ========== -->
+{% if not forloop.last %}
+<!-- Path Divider -->
 <section class="py-16 bg-background">
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex items-center justify-center gap-4 text-gray-400" data-animate>
@@ -86,170 +143,28 @@
         </div>
     </div>
 </section>
-
-<!-- ========== CHAPTER 2: THE CHILDREN ========== -->
-<section class="py-24 bg-white">
+{% endif %}
+{% empty %}
+<!-- Fallback when no chapters exist -->
+<section id="premiere-histoire" class="py-24 bg-white">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid lg:grid-cols-2 gap-16 items-center">
-            <!-- Image first on this side -->
-            <div class="relative order-2 lg:order-1" data-animate>
-                <div class="aspect-[4/5] rounded-2xl overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800" alt="Étudiants" class="w-full h-full object-cover">
-                </div>
-                <div class="absolute -bottom-6 -right-6 bg-charcoal text-white p-6 rounded-xl shadow-xl">
-                    <p class="text-3xl font-bold">127</p>
-                    <p class="text-sm opacity-80">{% trans "boursiers cette année" %}</p>
-                </div>
-            </div>
-            
-            <!-- Story -->
-            <div class="order-1 lg:order-2" data-animate data-delay="200">
-                <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{% trans "Chapitre 2" %}</p>
+            <div data-animate>
+                <p class="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{% trans "Une voix du village" %}</p>
                 <h2 class="font-display text-3xl sm:text-4xl font-bold text-charcoal mb-6 leading-tight">
-                    {% trans "« Je serai médecin. Comme ceux qui ont soigné ma mère. »" %}
+                    {% trans "« Avant, je marchais 12 km pour voir un médecin. »" %}
                 </h2>
                 <div class="prose prose-lg text-gray-600">
-                    <p>{% trans "Arouna, 16 ans. Son père est cultivateur. Sa mère a survécu à une complication pendant l'accouchement grâce au centre de santé. Depuis, il a une mission." %}</p>
-                    <p>{% trans "Grâce à une bourse FDTM, il est premier de sa classe au lycée de Dschang. Dans 7 ans, il rentrera au village. Avec une blouse blanche." %}</p>
+                    <p>{% trans "Maman Rose, 67 ans, guérisseuse traditionnelle à Foto. Quand le centre de santé a ouvert ses portes, elle a pleuré. Pas de tristesse — de soulagement." %}</p>
                 </div>
-                <div class="mt-8 flex items-center gap-4">
-                    <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
-                        <span class="text-primary font-bold text-lg">A</span>
-                    </div>
-                    <div>
-                        <p class="font-semibold text-charcoal">Arouna M.</p>
-                        <p class="text-sm text-gray-500">{% trans "Boursier depuis 2022" %}</p>
-                    </div>
-                </div>
+            </div>
+            <div class="relative" data-animate data-delay="200">
+                <div class="aspect-[4/5] rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20"></div>
             </div>
         </div>
     </div>
 </section>
-
-<!-- ========== DYNAMIC CHAPTERS: HORIZONTAL SCROLL ========== -->
-{% if home_chapters %}
-<section class="relative bg-charcoal overflow-hidden">
-    <!-- Chapter Navigation Indicator -->
-    <div class="absolute top-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-        {% for chapter in home_chapters %}
-        <button class="chapter-dot w-3 h-3 rounded-full bg-white/30 hover:bg-white/60 transition-colors" 
-                data-chapter="{{ forloop.counter0 }}"></button>
-        {% endfor %}
-    </div>
-    
-    <!-- Horizontal Scroll Container -->
-    <div class="chapters-carousel flex overflow-x-auto snap-x snap-mandatory scrollbar-hide" 
-         style="scroll-behavior: smooth;">
-        {% for chapter in home_chapters %}
-        <div class="chapter-slide flex-shrink-0 w-full min-h-[80vh] snap-center relative
-                    {% if chapter.dark_background %}bg-charcoal text-white{% else %}bg-white text-charcoal{% endif %}"
-             data-chapter-index="{{ forloop.counter0 }}">
-            
-            <!-- Background Image -->
-            {% if chapter.get_background_url %}
-            <div class="absolute inset-0">
-                <img src="{{ chapter.get_background_url }}" alt="" class="w-full h-full object-cover opacity-30">
-                <div class="absolute inset-0 bg-gradient-to-r {% if chapter.dark_background %}from-charcoal via-charcoal/80 to-transparent{% else %}from-white via-white/90 to-transparent{% endif %}"></div>
-            </div>
-            {% endif %}
-            
-            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 flex items-center min-h-[80vh]">
-                <div class="max-w-2xl">
-                    <!-- Chapter Number -->
-                    <p class="text-sm font-semibold uppercase tracking-wider mb-4" 
-                       style="color: {{ chapter.accent_color }}">
-                        {% trans "Chapitre" %} {{ chapter.chapter_number }}
-                    </p>
-                    
-                    <!-- Title -->
-                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">{{ chapter.title }}</h2>
-                    
-                    <!-- Subtitle -->
-                    {% if chapter.subtitle %}
-                    <p class="text-xl md:text-2xl mb-6 {% if chapter.dark_background %}text-gray-300{% else %}text-gray-600{% endif %}">
-                        {{ chapter.subtitle }}
-                    </p>
-                    {% endif %}
-                    
-                    <!-- Content -->
-                    {% if chapter.content %}
-                    <div class="prose prose-lg {% if chapter.dark_background %}prose-invert{% endif %} mb-8">
-                        {{ chapter.content|linebreaks }}
-                    </div>
-                    {% endif %}
-                    
-                    <!-- Stats (for impact chapters) -->
-                    {% if chapter.stats %}
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
-                        {% for stat in chapter.stats %}
-                        <div class="text-center md:text-left">
-                            <p class="text-3xl md:text-4xl font-bold" style="color: {{ chapter.accent_color }}">{{ stat.value }}</p>
-                            <p class="text-sm {% if chapter.dark_background %}text-gray-400{% else %}text-gray-500{% endif %}">{{ stat.label }}</p>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                    
-                    <!-- CTA -->
-                    {% if chapter.cta_text %}
-                    <a href="{% if '://' in chapter.cta_url %}{{ chapter.cta_url }}{% else %}{% url chapter.cta_url %}{% endif %}" 
-                       class="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold transition-all"
-                       style="background: {{ chapter.accent_color }}; color: white;">
-                        {{ chapter.cta_text }}
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                        </svg>
-                    </a>
-                    {% endif %}
-                </div>
-            </div>
-            
-            <!-- Scroll Indicator -->
-            {% if not forloop.last %}
-            <div class="absolute right-8 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center gap-2 text-white/50">
-                <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                </svg>
-                <span class="text-xs uppercase tracking-wider rotate-90">{% trans "Défiler" %}</span>
-            </div>
-            {% endif %}
-        </div>
-        {% endfor %}
-    </div>
-</section>
-
-<style>
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-.chapter-dot.active { background: white; transform: scale(1.3); }
-</style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const carousel = document.querySelector('.chapters-carousel');
-    const dots = document.querySelectorAll('.chapter-dot');
-    
-    if (carousel && dots.length) {
-        // Update active dot on scroll
-        carousel.addEventListener('scroll', function() {
-            const slideWidth = carousel.offsetWidth;
-            const currentIndex = Math.round(carousel.scrollLeft / slideWidth);
-            dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
-        });
-        
-        // Click dot to scroll
-        dots.forEach((dot, i) => {
-            dot.addEventListener('click', () => {
-                carousel.scrollTo({ left: i * carousel.offsetWidth, behavior: 'smooth' });
-            });
-        });
-        
-        // Initialize first dot
-        dots[0]?.classList.add('active');
-    }
-});
-</script>
-{% endif %}
+{% endfor %}
 
 <!-- ========== FDTM INTRODUCTION: WHO WE ARE ========== -->
 <section class="py-24 bg-gradient-to-b from-background to-white">
